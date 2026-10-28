@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skill/vendor assets bukan bagian dari source aplikasi.
+    ".agents/**",
   ]),
 ]);
 

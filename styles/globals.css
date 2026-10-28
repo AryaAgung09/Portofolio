@@ -1,0 +1,387 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   TEMA
+   Satu palet utama (ink) + satu aksen (lime). Mode gelap adalah default.
+   Ubah warna di sini—seluruh halaman mengikuti token yang sama.
+   ========================================================================== */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+
+  --background: #f2f0e9;
+  --foreground: #0b0d0f;
+  --surface: #fbfaf5;
+  --surface-2: #e8e5db;
+  --muted: #5f6469;
+  --muted-strong: #3c4046;
+  --border: rgba(11, 13, 15, 0.14);
+  --border-strong: rgba(11, 13, 15, 0.24);
+  --accent: #c6f24e;
+  --accent-foreground: #0a0c08;
+  --accent-ink: #435e00;
+  --accent-soft: rgba(94, 128, 0, 0.14);
+  --grid-line: rgba(11, 13, 15, 0.055);
+  --photo-frame: #e7e3d8;
+  --glow: rgba(120, 160, 0, 0.16);
+  --shadow-color: rgba(11, 13, 15, 0.18);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #08090b;
+  --foreground: #f2f3ee;
+  --surface: #0e1014;
+  --surface-2: #15191f;
+  --muted: #9aa1ac;
+  --muted-strong: #ccd1d8;
+  --border: rgba(242, 243, 238, 0.1);
+  --border-strong: rgba(242, 243, 238, 0.2);
+  --accent: #c6f24e;
+  --accent-foreground: #0a0c08;
+  --accent-ink: #c6f24e;
+  --accent-soft: rgba(198, 242, 78, 0.12);
+  --grid-line: rgba(242, 243, 238, 0.05);
+  --photo-frame: #e7e3d8;
+  --glow: rgba(198, 242, 78, 0.14);
+  --shadow-color: rgba(0, 0, 0, 0.55);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-float-slow: float-slow 7s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 18s linear infinite;
+  --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
+  --animate-caret: caret 1s steps(2, start) infinite;
+  --animate-scroll-dot: scroll-dot 2.4s ease-in-out infinite;
+  --animate-aurora: aurora 20s ease-in-out infinite alternate;
+  --animate-fade-in: fade-in 0.5s ease both;
+  --animate-rise-in: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ==========================================================================
+   DASAR
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    min-height: 100svh;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--muted) 42%, transparent);
+    border: 2px solid var(--background);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+
+  dialog {
+    border: none;
+    padding: 0;
+    background: transparent;
+    max-width: none;
+    max-height: none;
+  }
+
+  dialog::backdrop {
+    background: rgba(4, 5, 6, 0.72);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* ==========================================================================
+   UTILITAS & TEKSTUR
+   ========================================================================== */
+
+/** Latar grid teknis dengan fade radial. */
+.grid-field {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(
+    ellipse 85% 70% at 50% 35%,
+    black 20%,
+    transparent 78%
+  );
+}
+
+/** Fade horizontal untuk marquee di tepi layar. */
+.mask-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+/** Tekstur grain halus; memberi kesan cetak, bukan permukaan plastik. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
+}
+
+/** Lingkaran cahaya yang bergerak pelan di belakang hero. */
+.aurora {
+  background:
+    radial-gradient(
+      42% 42% at 28% 32%,
+      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      38% 38% at 74% 62%,
+      color-mix(in srgb, #7dd3fc 18%, transparent) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      30% 30% at 52% 82%,
+      color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+      transparent 70%
+    );
+  filter: blur(48px);
+  animation: aurora 20s ease-in-out infinite alternate;
+}
+
+/** Teks outline untuk wordmark footer. */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--border-strong);
+}
+
+/** Tautan lewati navigasi. */
+.skip-link {
+  position: fixed;
+  top: -120px;
+  left: 1rem;
+  z-index: 200;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: top 180ms ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(3deg);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.86);
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+}
+
+@keyframes aurora {
+  0% {
+    transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 2%, 0) rotate(8deg) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-1%, 3%, 0) rotate(-4deg) scale(1.02);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   PREFERS-REDUCED-MOTION
+   Konten tetap tampil; hanya gerak yang dihilangkan.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .aurora {
+    animation: none !important;
+  }
+
+  .grain::after {
+    display: none;
+  }
+}

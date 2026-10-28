@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Arya Agung">
+  <rect width="64" height="64" rx="14" fill="#C6F24E" />
+  <path d="M14 46 25.2 17h4.9L41.3 46h-5.6l-2.3-6.4H21.7L19.4 46H14Zm9.2-10.9h7.9l-3.9-11.1-4 11.1Z" fill="#0A0C08" />
+  <path d="M44 46 51 27h4.2L48.2 46H44Z" fill="#0A0C08" />
+  <circle cx="49.5" cy="19.5" r="3.5" fill="#0A0C08" />
+</svg>
