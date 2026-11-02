@@ -62,7 +62,6 @@ export default function About() {
                     { label: "Program", value: "TRPL" },
                     { label: "Kampus", value: "Polibatam" },
                     { label: "Angkatan", value: "2023" },
-                    { label: "IPK", value: `${profile.gpa} / 4.00` },
                   ].map((item) => (
                     <div key={item.label}>
                       <dt className="font-mono text-[8px] uppercase tracking-[0.14em] text-black/45">
@@ -93,8 +92,7 @@ export default function About() {
             <Reveal direction="right">
               <p className="max-w-2xl text-xl leading-8 tracking-tight text-foreground sm:text-[1.35rem] sm:leading-9">
                 Saya {profile.shortName}, mahasiswa {profile.major} di{" "}
-                {profile.university}. Saya suka membangun produk dari nol—mulai
-                dari skema database sampai detail terakhir di layar.
+                {profile.university}. Saya memiliki ketertarikan dalam pengembangan perangkat lunak, khususnya web development..
               </p>
             </Reveal>
 
@@ -112,17 +110,7 @@ export default function About() {
               ))}
             </div>
 
-            <Reveal direction="right" delay={0.12}>
-              <blockquote className="mt-9 border-l-2 border-accent pl-5">
-                <p className="max-w-xl text-lg leading-8 tracking-tight text-foreground sm:text-xl">
-                  Kode yang baik tidak berteriak. Ia bekerja, lalu menghilang di
-                  balik pengalaman yang terasa wajar.
-                </p>
-                <footer className="mt-2 font-mono text-[9px] uppercase tracking-[0.16em] text-muted">
-                  — prinsip kerja
-                </footer>
-              </blockquote>
-            </Reveal>
+         
 
             {/* Statistik */}
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">

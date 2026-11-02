@@ -46,18 +46,7 @@ export interface SocialLink {
   icon: "github" | "linkedin" | "instagram" | "mail";
 }
 
-export interface Stat {
-  /** Angka yang dihitung naik. */
-  value: number;
-  /** Jumlah angka di belakang koma (0 untuk bilangan bulat). */
-  decimals?: number;
-  /** Teks setelah angka, misalnya "+" atau "%". */
-  suffix?: string;
-  /** Label singkat di bawah angka. */
-  label: string;
-  /** Keterangan kecil tambahan (opsional). */
-  note?: string;
-}
+
 
 export type SkillCategory = "Frontend" | "Backend" | "Database" | "Tools";
 
@@ -178,22 +167,22 @@ export const profile = {
   initials: "AA",
   /** Peran yang diketik bergantian di hero. */
   roles: [
+    "Software Enginner",
     "Full-stack Developer",
-    "Backend Engineer",
-    "UI-minded Builder",
-    "Mahasiswa TRPL",
+    "Computer Science Student",
+    
   ],
   /** Kalimat utama di hero (satu baris pendukung). */
   headline:
     "Saya membangun aplikasi web yang rapi di balik layar dan nyaman dipakai di depan layar.",
   /** Deskripsi pendek di hero. */
   intro:
-    "Mahasiswa D4 Teknologi Rekayasa Perangkat Lunak di Politeknik Negeri Batam. Fokus pada TypeScript, Laravel, dan antarmuka yang tidak membuat orang berpikir dua kali.",
+    "Mahasiswa Teknologi Rekayasa Perangkat Lunak (TRPL), Jurusan Teknik Informatika di Politeknik Negeri Batam yang memiliki minat dalam pengembangan aplikasi web dan mobile  Berpengalaman mengerjakan berbagai proyek  selama perkuliahan serta terbiasa menghadapi dan menyelesaikan permasalahan teknis pada komputer dan pengembangan sistem. Memiliki kemampuan problem solving yang baik, cepat belajar, dan selalu bersemangat untuk mempelajari hal-hal baru di bidang teknologi",
   /** Paragraf untuk section Tentang. */
   bio: [
-    "Perjalanan saya dimulai dari rasa penasaran: bagaimana satu baris kode bisa berubah menjadi produk yang benar-benar dipakai orang? Sejak itu, saya bergerak dari sekadar “membuat website” ke arah merancang sistem yang jelas, cepat, dan enak dirawat.",
-    "Hari ini saya banyak bekerja dengan TypeScript, React, Next.js, Laravel, dan PostgreSQL. Saya paling menikmati bagian yang jarang terlihat—merapikan model data, memangkas query, dan memastikan setiap state—loading, kosong, error—terasa manusiawi.",
-    "Di luar kelas, saya aktif di komunitas teknologi kampus, mengerjakan proyek kecil untuk UMKM, dan mendokumentasikan proses belajar. Bagi saya, software yang baik lahir dari rasa ingin tahu yang konsisten.",
+    "Ketertarikan saya terhadap dunia teknologi berawal dari rasa ingin tahu tentang bagaimana sebuah ide dapat diwujudkan menjadi produk digital yang benar-benar bermanfaat. Dari sana, saya terus belajar untuk tidak hanya membuat aplikasi yang berfungsi, tetapi juga membangun sistem yang terstruktur, efisien, dan mudah dikembangkan.",
+    
+    "Selain kemampuan teknis di bidang pengembangan perangkat lunak, saya juga memiliki keterampilan dalam administrasi dan pengelolaan dokumen. Saya terbiasa menyusun, mengatur, dan mengelola berbagai dokumen akademik serta menggunakan Microsoft Word untuk pengolahan dokumen dan Microsoft Excel untuk pengolahan data, tabel, dan kebutuhan administrasi. Saya juga mampu menggunakan berbagai perangkat lunak pendukung kegiatan perkuliahan dan penyusunan tugas akademik.",
   ],
   /** Status ketersediaan yang tampil di hero dan kontak. */
   availability: "Terbuka untuk magang & kolaborasi",
@@ -236,13 +225,21 @@ export const profile = {
   ],
 } as const;
 
+export interface Stat {
+  /** Angka yang dianimasikan naik. */
+  value: number;
+  /** Jumlah angka di belakang koma (opsional). */
+  decimals?: number;
+  /** Akhiran, mis. "+". */
+  suffix?: string;
+  /** Label utama. */
+  label: string;
+  /** Keterangan kecil di bawah label (opsional). */
+  note?: string;
+}
+
 /** Statistik yang dihitung naik di section Tentang. */
-export const stats: Stat[] = [
-  { value: 12, suffix: "+", label: "Proyek selesai", note: "akademik & personal" },
-  { value: 3, suffix: "+", label: "Tahun belajar", note: "sejak 2023" },
-  { value: 3.72, decimals: 2, label: "IPK saat ini", note: "skala 4.00" },
-  { value: 6, suffix: "+", label: "Sertifikasi", note: "web & cloud" },
-];
+export const stats: Stat[] = [];
 
 /** Tautan sosial. Ganti href dengan akunmu. */
 export const socials: SocialLink[] = [

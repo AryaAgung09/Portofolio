@@ -10,20 +10,6 @@ import SoftSkills from "@/components/sections/SoftSkills";
 import Projects from "@/components/sections/Projects";
 import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
-import Marquee from "@/components/ui/Marquee";
-
-const marqueeItems = [
-  "TypeScript",
-  "Next.js",
-  "React",
-  "Laravel",
-  "PostgreSQL",
-  "Tailwind CSS",
-  "Node.js",
-  "GSAP",
-  "Framer Motion",
-  "Prisma",
-];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -70,7 +56,6 @@ export default function Home() {
 
       <main id="konten" className="relative">
         <Hero />
-        <Marquee items={marqueeItems} />
         <About />
         <Skills />
         <SoftSkills />
