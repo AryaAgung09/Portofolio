@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { JetBrains_Mono, Space_Grotesk, Geist } from "next/font/google";
 import { Providers } from "@/components/providers/Providers";
 import { profile, site } from "@/data/portfolio";
+import ParticleDrift from "@/components/ui/particle-drift";
 import "@/styles/globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -66,11 +70,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  colorScheme: "dark light",
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#08090b" },
-    { media: "(prefers-color-scheme: light)", color: "#f2f0e9" },
-  ],
+  colorScheme: "dark",
+  themeColor: "#08090b",
 };
 
 export default function RootLayout({
@@ -82,7 +83,7 @@ export default function RootLayout({
     <html
       lang="id"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={cn(spaceGrotesk.variable, jetbrainsMono.variable, "font-sans", geist.variable)}
     >
       <head>
         <noscript>
@@ -91,6 +92,17 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="grain min-h-svh bg-background text-foreground antialiased">
+        <ParticleDrift
+          mode="auto"
+          speed={1}
+          size={1}
+          gap={2}
+          length={1}
+          density={1}
+          strokeWidth={1}
+          opacity={1}
+          className="fixed inset-0 z-0 pointer-events-none"
+        />
         <Providers>
           <a href="#konten" className="skip-link">
             Lewati ke konten

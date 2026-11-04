@@ -23,7 +23,7 @@ export default function NotFound() {
         </p>
 
         <h1 className="mt-6 text-[clamp(3.5rem,12vw,8rem)] font-semibold leading-[0.85] tracking-[-0.06em] text-foreground">
-          404<span className="text-accent">.</span>
+          404<span className="text-accent-ink">.</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-md text-base leading-7 text-muted">

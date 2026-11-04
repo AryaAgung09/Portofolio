@@ -120,7 +120,7 @@ export default function Projects() {
                       <span
                         className={cn(
                           "font-mono text-[9px] tabular-nums",
-                          isActive ? "text-black/55" : "text-muted/60",
+                          isActive ? "text-accent-foreground" : "text-muted",
                         )}
                       >
                         {String(countFor(category)).padStart(2, "0")}

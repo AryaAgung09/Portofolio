@@ -247,7 +247,7 @@ export default function Education() {
                         )}
                       >
                         <span className="truncate">{item.title}</span>
-                        <span className="shrink-0 font-mono text-[9px] tabular-nums text-muted/70">
+                        <span className="shrink-0 font-mono text-[9px] tabular-nums text-muted">
                           {item.year}
                         </span>
                       </a>

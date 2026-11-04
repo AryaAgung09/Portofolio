@@ -193,7 +193,7 @@ export const profile = {
   /** Zona waktu untuk jam lokal di footer. */
   timeZone: "Asia/Jakarta",
   /** Email utama. */
-  email: "aryasirega23@gmail.com",
+  email: "aryaagungsiregar23@gmail.com",
   /** Nomor telepon (tampilan). */
   phone: "+62 896-7421-6844",
   /** Nomor telepon untuk tautan tel:. */
@@ -216,7 +216,7 @@ export const profile = {
   /** IPK saat ini (string agar format desimal tetap). */
   gpa: "3.72",
   /** Hal yang sedang dipelajari—tampil di kartu Tentang. */
-  learning: ["System design", "Testing", "Cloud fundamentals", "Design systems"],
+  learning: ["System design", "Testing", "Design systems"],
   /** Prinsip kerja singkat. */
   principles: [
     "Sederhana dulu, baru cerdas.",
@@ -243,10 +243,9 @@ export const stats: Stat[] = [];
 
 /** Tautan sosial. Ganti href dengan akunmu. */
 export const socials: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/", icon: "github" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: "linkedin" },
-  { label: "Instagram", href: "https://www.instagram.com/", icon: "instagram" },
-  { label: "Email", href: "mailto:aryasirega23@gmail.com", icon: "mail" },
+  { label: "GitHub", href: "https://github.com/AryaAgung09", icon: "github" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/arya-agung-3867b8421/", icon: "linkedin" },
+  { label: "Email", href: "mailto:aryaagungsiregar23@gmail.com", icon: "mail" },
 ];
 
 /** Navigasi utama. Urutan di sini menentukan urutan navbar. */

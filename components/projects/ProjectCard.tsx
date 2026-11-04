@@ -131,7 +131,7 @@ export default function ProjectCard({
         </p>
 
         {featured ? (
-          <p className="mt-3 line-clamp-3 text-[13px] leading-6 text-muted/85">
+          <p className="mt-3 line-clamp-3 text-[13px] leading-6 text-muted">
             {project.description}
           </p>
         ) : null}

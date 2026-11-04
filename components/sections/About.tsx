@@ -1,9 +1,9 @@
-import Image from "next/image";
-import { Check, MapPin } from "lucide-react";
+import { Check } from "lucide-react";
 import { profile, stats } from "@/data/portfolio";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import ProfileCard from "@/components/ui/ProfileCard";
 
 export default function About() {
   return (
@@ -25,66 +25,26 @@ export default function About() {
         <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[0.4fr_0.6fr] lg:gap-16">
           {/* Kartu identitas */}
           <Reveal direction="left">
-            <div className="lg:sticky lg:top-28">
-              <div className="relative overflow-hidden rounded-[2rem] border border-black/10 bg-[var(--photo-frame)] p-3 text-[#0b0d0f] shadow-[0_30px_60px_-35px_rgba(0,0,0,0.55)]">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem] bg-[#0c0f13]">
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-[radial-gradient(120%_85%_at_50%_8%,rgba(198,242,78,0.18),transparent_62%)]"
-                  />
-                  <Image
-                    src={profile.photo}
-                    alt={profile.photoAlt}
-                    fill
-                    sizes="(max-width: 1024px) 85vw, 360px"
-                    className="object-contain object-bottom"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 via-black/30 to-transparent"
-                  />
-                  <div className="absolute inset-x-3 bottom-3 text-white">
-                    <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/60">
-                      Kartu mahasiswa · 2026
-                    </p>
-                    <p className="mt-1 text-xl font-semibold tracking-tight">
-                      {profile.name}
-                    </p>
-                    <p className="mt-0.5 flex items-center gap-1.5 text-[11px] text-white/70">
-                      <MapPin className="h-3 w-3 text-accent" aria-hidden />
-                      {profile.location}
-                    </p>
-                  </div>
-                </div>
-
-                <dl className="grid grid-cols-2 gap-x-4 gap-y-3 px-3 py-4">
-                  {[
-                    { label: "Program", value: "TRPL" },
-                    { label: "Kampus", value: "Polibatam" },
-                    { label: "Angkatan", value: "2023" },
-                  ].map((item) => (
-                    <div key={item.label}>
-                      <dt className="font-mono text-[8px] uppercase tracking-[0.14em] text-black/45">
-                        {item.label}
-                      </dt>
-                      <dd className="mt-1 text-[13px] font-semibold tracking-tight">
-                        {item.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-
-              <div className="mt-3 flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface/60 px-4 py-3">
-                <span className="text-xs leading-5 text-muted">
-                  {profile.availability}
-                </span>
-                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-accent-soft px-2.5 py-1 font-mono text-[8px] uppercase tracking-[0.12em] text-accent-ink">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  Open
-                </span>
-              </div>
-            </div>
+            <ProfileCard
+              name={profile.name}
+              title="Software Engineer"
+              handle="AryaAgung09"
+              status="Terbuka untuk kolaborasi"
+              contactText="Hubungi"
+              contactHref={`mailto:${profile.email}`}
+              avatarUrl={profile.photo}
+              avatarAlt={profile.photoAlt}
+              holo={0.8}
+              glare={0.5}
+              tiltStrength={24}
+              parallax={12}
+              radius={16}
+              enableTilt
+              intro
+              showUserInfo
+              enableMobileTilt={false}
+              theme="dark"
+            />
           </Reveal>
 
           {/* Narasi */}
@@ -128,7 +88,7 @@ export default function About() {
                       {stat.label}
                     </p>
                     {stat.note ? (
-                      <p className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.1em] text-muted/80">
+                      <p className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.1em] text-muted">
                         {stat.note}
                       </p>
                     ) : null}

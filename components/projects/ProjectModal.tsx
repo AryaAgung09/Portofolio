@@ -193,7 +193,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 Lihat kode
               </a>
             ) : null}
-            <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.12em] text-muted/60">
+            <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.12em] text-muted">
               <ExternalLink className="h-3 w-3" aria-hidden /> studi kasus
             </span>
           </div>

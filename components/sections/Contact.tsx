@@ -23,7 +23,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const inputClass =
-  "mt-2 w-full rounded-xl border border-white/12 bg-white/[0.05] px-3.5 py-3 text-sm text-white outline-none transition-colors duration-200 placeholder:text-white/40 hover:border-white/20 focus:border-accent focus:bg-white/[0.08]";
+  "mt-2 w-full rounded-xl border border-white/12 bg-white/[0.05] px-3.5 py-3 text-sm text-white outline-none transition-colors duration-200 placeholder:text-white/75 hover:border-white/20 focus:border-accent focus:bg-white/[0.08]";
 
 export default function Contact() {
   const reduceMotion = useReducedMotion();
@@ -178,7 +178,7 @@ export default function Contact() {
               <div className="mt-9 space-y-3">
                 <div className="flex items-center justify-between gap-3 rounded-2xl border border-black/15 bg-black/[0.045] px-4 py-3.5">
                   <div className="min-w-0">
-                    <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-black/50">
+                    <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-black/75">
                       Email
                     </p>
                     <a
@@ -208,7 +208,7 @@ export default function Contact() {
                     href={profile.phoneHref}
                     className="group rounded-2xl border border-black/15 bg-black/[0.045] px-4 py-3.5 transition-colors hover:bg-black/[0.08]"
                   >
-                    <p className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-black/50">
+                    <p className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-black/75">
                       <Phone className="h-2.5 w-2.5" aria-hidden />
                       Telepon
                     </p>
@@ -218,7 +218,7 @@ export default function Contact() {
                   </a>
 
                   <div className="rounded-2xl border border-black/15 bg-black/[0.045] px-4 py-3.5">
-                    <p className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-black/50">
+                    <p className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-black/75">
                       <MapPin className="h-2.5 w-2.5" aria-hidden />
                       Lokasi
                     </p>
@@ -230,7 +230,7 @@ export default function Contact() {
               </div>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-black/50">
+                <span className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-black/75">
                   Atau temukan saya di
                 </span>
                 <SocialLinks inverted size="sm" />
@@ -247,14 +247,14 @@ export default function Contact() {
 
                 <div className="relative flex items-center justify-between gap-3">
                   <div>
-                    <p className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-white/40">
+                    <p className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-white/75">
                       Formulir pesan
                     </p>
                     <h3 className="mt-1 text-lg font-semibold tracking-tight text-white">
                       Ceritakan proyekmu
                     </h3>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-2.5 py-1 font-mono text-[7.5px] uppercase tracking-[0.12em] text-white/45">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-2.5 py-1 font-mono text-[7.5px] uppercase tracking-[0.12em] text-white/75">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                     {profile.locationShort}
                   </span>
@@ -289,7 +289,7 @@ export default function Contact() {
                         <h4 className="mt-5 text-2xl font-semibold tracking-tight">
                           Terkirim. Terima kasih{sentName ? `, ${sentName}` : ""}.
                         </h4>
-                        <p className="mt-2 max-w-xs text-sm leading-6 text-white/50">
+                        <p className="mt-2 max-w-xs text-sm leading-6 text-white/75">
                           Pesanmu sudah masuk. Saya akan membalas lewat email
                           yang kamu tuliskan.
                         </p>
@@ -327,7 +327,7 @@ export default function Contact() {
                           <div>
                             <label
                               htmlFor={fieldId("name")}
-                              className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/45"
+                              className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/75"
                             >
                               Nama
                             </label>
@@ -365,7 +365,7 @@ export default function Contact() {
                           <div>
                             <label
                               htmlFor={fieldId("email")}
-                              className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/45"
+                              className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/75"
                             >
                               Email
                             </label>
@@ -404,7 +404,7 @@ export default function Contact() {
                         <div>
                           <label
                             htmlFor={fieldId("message")}
-                            className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/45"
+                            className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/75"
                           >
                             Pesan
                           </label>
@@ -437,7 +437,7 @@ export default function Contact() {
                               {errors.message}
                             </p>
                           ) : (
-                            <p className="mt-1.5 text-right font-mono text-[8.5px] tabular-nums text-white/40">
+                            <p className="mt-1.5 text-right font-mono text-[8.5px] tabular-nums text-white/75">
                               {values.message.length} / 2000
                             </p>
                           )}
@@ -489,7 +489,7 @@ export default function Contact() {
                         <button
                           type="submit"
                           disabled={status === "submitting"}
-                          className="group inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-accent px-5 py-3.5 text-sm font-semibold text-accent-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-18px_rgba(198,242,78,0.55)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                          className="group inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-accent px-5 py-3.5 text-sm font-semibold text-accent-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-18px_rgba(96,165,250,0.55)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
                         >
                           {status === "submitting" ? (
                             <>
@@ -510,7 +510,7 @@ export default function Contact() {
                           )}
                         </button>
 
-                        <p className="text-center text-[11px] leading-5 text-white/45">
+                        <p className="text-center text-[11px] leading-5 text-white/75">
                           Datamu hanya dipakai untuk membalas pesan ini.
                         </p>
 

@@ -119,7 +119,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <p className="mt-6 text-[10px] leading-4 text-muted/70">
+        <p className="mt-6 text-[10px] leading-4 text-muted">
           Seluruh konten dapat disesuaikan di{" "}
           <code className="font-mono text-[10px] text-muted-strong">
             data/portfolio.ts

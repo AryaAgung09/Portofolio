@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 
 /**
  * Provider global:
- * - next-themes: mode gelap/terang (default gelap).
+ * - next-themes: mengunci tampilan ke mode gelap.
  * - MotionConfig: hormati prefers-reduced-motion secara otomatis.
  * - Lenis: smooth scrolling + sinkronisasi dengan GSAP ScrollTrigger.
  */
@@ -15,6 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <NextThemesProvider
       attribute="class"
+      forcedTheme="dark"
       defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange

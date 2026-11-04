@@ -186,7 +186,7 @@ export default function Skills() {
                         "max-w-full truncate font-mono text-[8.5px] uppercase tracking-[0.1em] transition-colors sm:text-[9px]",
                         isActive
                           ? "text-accent-ink"
-                          : "text-muted/70 group-hover/f:text-muted-strong",
+                          : "text-muted group-hover/f:text-muted-strong",
                       )}
                     >
                       {skill.name}
@@ -205,14 +205,14 @@ export default function Skills() {
                 >
                   <Plus className="h-4 w-4" aria-hidden />
                 </span>
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.1em] text-muted/60 sm:text-[9px]">
+                <span className="font-mono text-[8.5px] uppercase tracking-[0.1em] text-muted sm:text-[9px]">
                   Terus bertambah
                 </span>
               </div>
             </div>
           </div>
 
-          <p className="mt-12 flex items-center justify-center gap-1.5 font-mono text-[8.5px] uppercase tracking-[0.16em] text-muted/60">
+          <p className="mt-12 flex items-center justify-center gap-1.5 font-mono text-[8.5px] uppercase tracking-[0.16em] text-muted">
             <MousePointerClick className="h-3 w-3 text-accent-ink" aria-hidden />
             Klik ikon untuk detail
           </p>
@@ -239,7 +239,7 @@ export default function Skills() {
               </div>
             </div>
 
-            <p className="mt-3 flex items-center gap-1.5 font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted/70">
+            <p className="mt-3 flex items-center gap-1.5 font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted">
               <Sparkles className="h-3 w-3 text-accent-ink" aria-hidden />
               Detail diperbarui saat ikon dipilih
             </p>
@@ -337,7 +337,7 @@ function SkillDetail({
         </span>
 
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[9px] tabular-nums text-muted/70">
+          <span className="font-mono text-[9px] tabular-nums text-muted">
             {String(index + 1).padStart(2, "0")} /{" "}
             {String(total).padStart(2, "0")}
           </span>
@@ -388,7 +388,7 @@ function SkillDetail({
       </div>
 
       <div className="mt-5 flex items-center justify-between border-t border-border/50 pt-3.5">
-        <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-muted/70">
+        <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-muted">
           {skill.color ? "Warna brand" : "Ikon monokrom"}
         </span>
         {skill.color ? (
