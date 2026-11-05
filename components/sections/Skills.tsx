@@ -1,9 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { MousePointerClick, Plus, Sparkles, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { familiarTools, skills, type Skill } from "@/data/portfolio";
+import { skills, type Skill } from "@/data/portfolio";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -69,19 +69,10 @@ export default function Skills() {
             title={
               <>
                 Alat kerja saya.
-                <br />
-                <span className="text-muted">Terus bertambah.</span>
               </>
             }
-            description="Bukan daftar logo untuk mengisi CV. Klik ikonnya untuk melihat bagaimana saya memakai tiap alat—dari prototipe sampai production."
+            description="Teknologi yang saya gunakan untuk membangun produk digital, dari prototipe sampai production."
           />
-          <p className="hidden max-w-[210px] shrink-0 border-l border-border pl-5 font-mono text-[10px] uppercase leading-5 tracking-[0.14em] text-muted lg:block">
-            {skills.length} teknologi
-            <br />
-            terus bertambah
-            <br />
-            klik untuk detail
-          </p>
         </div>
 
         {/* Ruang melayang: ikon bebas tanpa kotak & tanpa kategori */}
@@ -114,6 +105,8 @@ export default function Skills() {
           <div className="flex flex-wrap items-end justify-center gap-x-4 gap-y-6 sm:gap-x-8 sm:gap-y-8 lg:gap-x-10">
             {skills.map((skill, index) => {
               const isActive = skill.name === active.name;
+              const isWordIcon = skill.icon === "word";
+              const isExcelIcon = skill.icon === "excel";
               const skillBrand = skill.color ?? "var(--accent)";
               const { duration, delay } = floatTiming(index);
               const sizeClass =
@@ -151,6 +144,7 @@ export default function Skills() {
                         aria-hidden
                         className={cn(
                           "pointer-events-none absolute h-12 w-12 rounded-full blur-xl transition-all duration-500 sm:h-14 sm:w-14",
+                          (isWordIcon || isExcelIcon) && "hidden",
                           isActive
                             ? "opacity-60 sm:h-16 sm:w-16"
                             : "opacity-25 group-hover/f:opacity-55",
@@ -163,6 +157,7 @@ export default function Skills() {
                         aria-hidden
                         className={cn(
                           "pointer-events-none absolute rounded-full border transition-all duration-500",
+                          (isWordIcon || isExcelIcon) && "hidden",
                           isActive
                             ? "h-14 w-14 border-accent/45 opacity-100 sm:h-16 sm:w-16"
                             : "h-11 w-11 border-white/10 opacity-0 group-hover/f:opacity-100",
@@ -196,26 +191,8 @@ export default function Skills() {
               );
             })}
 
-            {/* Slot "terus bertambah" — ikut melayang */}
-            <div className="flex justify-center" style={{ marginTop: 14 }}>
-              <div className="flex w-[70px] flex-col items-center gap-2.5 sm:w-[84px]">
-                <span
-                  className="relative flex h-9 w-9 items-center justify-center rounded-full border border-dashed border-border-strong/60 text-muted sm:h-10 sm:w-10"
-                  style={{ animation: "float-slow 6.4s ease-in-out -1.4s infinite" }}
-                >
-                  <Plus className="h-4 w-4" aria-hidden />
-                </span>
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.1em] text-muted sm:text-[9px]">
-                  Terus bertambah
-                </span>
-              </div>
-            </div>
           </div>
 
-          <p className="mt-12 flex items-center justify-center gap-1.5 font-mono text-[8.5px] uppercase tracking-[0.16em] text-muted">
-            <MousePointerClick className="h-3 w-3 text-accent-ink" aria-hidden />
-            Klik ikon untuk detail
-          </p>
         </div>
 
         {/* Panel detail (desktop) */}
@@ -239,10 +216,6 @@ export default function Skills() {
               </div>
             </div>
 
-            <p className="mt-3 flex items-center gap-1.5 font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted">
-              <Sparkles className="h-3 w-3 text-accent-ink" aria-hidden />
-              Detail diperbarui saat ikon dipilih
-            </p>
           </div>
         </aside>
 
@@ -279,33 +252,6 @@ export default function Skills() {
           ) : null}
         </AnimatePresence>
 
-        {/* Teknologi lain */}
-        <div className="mt-6 flex flex-col gap-5 rounded-3xl border border-border/50 bg-white/[0.03] p-5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <div className="flex items-center gap-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-accent-ink">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden />
-            </span>
-            <div>
-              <p className="text-xs font-medium text-muted-strong">
-                Juga familiar dengan {familiarTools.length} tools lain
-              </p>
-              <p className="mt-0.5 text-[11px] leading-4 text-muted">
-                Dipakai sesekali untuk eksperimen dan proyek kecil.
-              </p>
-            </div>
-          </div>
-
-          <ul className="flex flex-wrap gap-2">
-            {familiarTools.map((tool) => (
-              <li
-                key={tool}
-                className="rounded-full border border-border/50 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-muted transition-colors hover:border-accent/50 hover:text-accent-ink"
-              >
-                {tool}
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </section>
   );

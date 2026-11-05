@@ -10,18 +10,16 @@ import ProjectArtwork from "./ProjectArtwork";
 type ProjectCardProps = {
   project: Project;
   onOpen: () => void;
-  featured?: boolean;
 };
 
 export default function ProjectCard({
   project,
   onOpen,
-  featured = false,
 }: ProjectCardProps) {
   const reduceMotion = useReducedMotion();
   const pointerX = useMotionValue(0.5);
   const pointerY = useMotionValue(0.5);
-  const maxTilt = featured ? 1.6 : 3.4;
+  const maxTilt = 2.4;
 
   const rotateY = useSpring(
     useTransform(pointerX, [0, 1], [-maxTilt, maxTilt]),
@@ -54,26 +52,17 @@ export default function ProjectCard({
         transformPerspective: 1400,
       }}
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-surface/55 transition-colors duration-300 hover:border-accent/40",
-        featured && "lg:grid lg:grid-cols-[1.04fr_0.96fr]",
+        "group relative grid h-[540px] grid-rows-[auto_1fr] overflow-hidden rounded-3xl border border-border bg-surface/55 transition-colors duration-300 hover:border-accent/40 sm:h-[560px] lg:h-[420px] lg:grid-cols-[1.04fr_0.96fr] lg:grid-rows-1",
       )}
     >
       <button
         type="button"
         onClick={onOpen}
         aria-label={`Lihat studi kasus ${project.title}`}
-        className={cn(
-          "relative block w-full overflow-hidden text-left",
-          featured && "lg:h-full",
-        )}
+        className="relative block w-full overflow-hidden text-left"
       >
         <div
-          className={cn(
-            "relative overflow-hidden",
-            featured
-              ? "aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[380px]"
-              : "aspect-[16/10]",
-          )}
+          className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:h-full"
         >
           <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.035]">
             <ProjectArtwork project={project} />
@@ -84,24 +73,10 @@ export default function ProjectCard({
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-95"
           />
 
-          <div className="pointer-events-none absolute inset-x-4 bottom-4 flex translate-y-2 items-center justify-between opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            <span className="rounded-full bg-accent px-3 py-1.5 text-[10px] font-semibold text-accent-foreground">
-              Buka studi kasus
-            </span>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-foreground">
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </span>
-          </div>
-
-          {featured ? (
-            <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 font-mono text-[8px] uppercase tracking-[0.14em] text-white/80 backdrop-blur-md">
-              Proyek unggulan
-            </span>
-          ) : null}
         </div>
       </button>
 
-      <div className={cn("flex flex-1 flex-col p-5", featured && "lg:p-7")}>
+      <div className="flex min-h-0 flex-col p-5 lg:p-7">
         <div className="flex items-center justify-between gap-3 font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted">
           <span>
             {project.category} · {project.year}
@@ -118,42 +93,40 @@ export default function ProjectCard({
         </div>
 
         <h3
-          className={cn(
-            "mt-2.5 text-2xl font-semibold tracking-[-0.035em] text-foreground",
-            featured && "sm:text-[2rem]",
-          )}
+          className="mt-2.5 line-clamp-2 min-h-14 text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-[2rem]"
         >
           {project.title}
         </h3>
 
-        <p className="mt-2 text-sm leading-6 text-muted">
+        <p className="mt-2 line-clamp-2 min-h-12 text-sm leading-6 text-muted">
           {project.tagline}
         </p>
 
-        {featured ? (
-          <p className="mt-3 line-clamp-3 text-[13px] leading-6 text-muted">
-            {project.description}
-          </p>
-        ) : null}
+        <p className="mt-3 line-clamp-3 min-h-[4.5rem] text-[13px] leading-6 text-muted">
+          {project.description}
+        </p>
 
-        <ul className="mt-4 flex flex-wrap gap-1.5">
-          {project.tags.slice(0, featured ? 5 : 4).map((tag) => (
-            <li
-              key={tag}
-              className="rounded-full border border-border px-2.5 py-1 font-mono text-[8.5px] uppercase tracking-[0.06em] text-muted"
-            >
-              {tag}
-            </li>
-          ))}
-        </ul>
+        {project.tags.length > 0 ? (
+          <ul className="mt-3 flex min-h-8 flex-wrap content-start gap-1.5">
+            {project.tags.slice(0, 4).map((tag) => (
+              <li
+                key={tag}
+                className="rounded-full border border-border px-2.5 py-1 font-mono text-[8.5px] uppercase tracking-[0.06em] text-muted"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        ) : null}
 
         <div className="mt-auto flex items-center justify-between gap-4 pt-5">
           <button
             type="button"
             onClick={onOpen}
+            aria-label={`Lihat detail ${project.title}`}
             className="group/detail inline-flex items-center gap-1.5 text-[11px] font-medium text-muted-strong transition-colors hover:text-accent-ink"
           >
-            Lihat detail
+            Klik untuk detail
             <ArrowUpRight
               className="h-3.5 w-3.5 transition-transform duration-300 group-hover/detail:-translate-y-0.5 group-hover/detail:translate-x-0.5"
               aria-hidden
@@ -177,7 +150,7 @@ export default function ProjectCard({
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Demo ${project.title}`}
+                aria-label={`${project.demoLabel ?? "Demo"} ${project.title}`}
                 className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted transition-colors hover:border-accent/60 hover:text-accent-ink"
               >
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />

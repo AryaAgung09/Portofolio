@@ -1,20 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useRef, useState } from "react";
 import {
-  AnimatePresence,
-  LayoutGroup,
   motion,
   useReducedMotion,
 } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import {
-  projectCategories,
   projects,
   socials,
   type Project,
-  type ProjectFilter,
 } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -27,24 +23,57 @@ const githubUrl =
   "https://github.com/";
 
 export default function Projects() {
-  const [filter, setFilter] = useState<ProjectFilter>("Semua");
   const [selected, setSelected] = useState<Project | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
-  const visibleProjects = useMemo(
-    () =>
-      filter === "Semua"
-        ? projects
-        : projects.filter((project) => project.category === filter),
-    [filter],
-  );
+  const scrollToProject = (index: number) => {
+    const carousel = carouselRef.current;
+    const slide = carousel?.querySelector<HTMLElement>(
+      `[data-project-index="${index}"]`,
+    );
+    if (!carousel || !slide) return;
 
-  const countFor = (category: ProjectFilter) =>
-    category === "Semua"
-      ? projects.length
-      : projects.filter((project) => project.category === category).length;
+    const left =
+      carousel.scrollLeft +
+      slide.getBoundingClientRect().left -
+      carousel.getBoundingClientRect().left -
+      (carousel.clientWidth - slide.clientWidth) / 2;
 
-  const showFeatured = filter === "Semua";
+    carousel.scrollTo({
+      left,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
+
+  const handleCarouselScroll = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const center = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
+    const slides = Array.from(
+      carousel.querySelectorAll<HTMLElement>("[data-project-index]"),
+    );
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    for (const slide of slides) {
+      const distance = Math.abs(
+        slide.getBoundingClientRect().left +
+          slide.getBoundingClientRect().width / 2 -
+          center,
+      );
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = Number(slide.dataset.projectIndex);
+      }
+    }
+
+    setActiveIndex((currentIndex) =>
+      currentIndex === closestIndex ? currentIndex : closestIndex,
+    );
+  };
 
   return (
     <section id="proyek" className="relative scroll-mt-24 py-24 sm:py-32">
@@ -65,7 +94,7 @@ export default function Projects() {
                 <span className="text-muted">Buka, bukan cuma lihat.</span>
               </>
             }
-            description="Enam studi kasus: apa masalahnya, keputusan apa yang saya ambil, dan bagaimana hasilnya. Klik kartu untuk membaca detail lengkapnya."
+            description="Proyek web, IoT, dan repositori pilihan. Buka detail untuk melihat cakupan proyek serta tautan sumber informasinya."
           />
 
           <Reveal delay={0.1} className="shrink-0">
@@ -80,112 +109,108 @@ export default function Projects() {
           </Reveal>
         </div>
 
-        {/* Filter kategori */}
-        <div className="mt-10 flex flex-col gap-3 border-y border-border py-3 sm:flex-row sm:items-center sm:justify-between">
-          <LayoutGroup id="project-filters">
+        {projects.length > 0 ? (
+          <div className="mt-10 sm:mt-12">
             <div
-              role="group"
-              aria-label="Filter kategori proyek"
-              className="flex flex-wrap items-center gap-1"
+              ref={carouselRef}
+              onScroll={handleCarouselScroll}
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Carousel proyek"
+              className="snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
-              {projectCategories.map((category) => {
-                const isActive = filter === category;
-
-                return (
-                  <button
-                    key={category}
-                    type="button"
-                    onClick={() => setFilter(category)}
-                    aria-pressed={isActive}
-                    className={cn(
-                      "relative isolate shrink-0 rounded-full px-2.5 py-2 text-[11.5px] font-medium transition-colors duration-200 sm:px-3.5 sm:text-[12px]",
-                      isActive
-                        ? "text-accent-foreground"
-                        : "text-muted hover:text-foreground",
-                    )}
+              <div className="flex items-stretch gap-4 py-2">
+                <span
+                  aria-hidden
+                  className="w-[14%] shrink-0 sm:w-[11%] lg:w-[10%]"
+                />
+                {projects.map((project, index) => (
+                  <motion.div
+                    key={project.slug}
+                    data-project-index={index}
+                    role="group"
+                    aria-roledescription="slide"
+                    aria-label={`${project.title}, ${index + 1} dari ${projects.length}`}
+                    className="w-[72%] max-w-[920px] shrink-0 snap-center sm:w-[78%] lg:w-[80%]"
+                    initial={false}
+                    animate={{ opacity: index === activeIndex ? 1 : 0.55 }}
+                    transition={{
+                      duration: reduceMotion ? 0 : 0.25,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
-                    {isActive ? (
-                      <motion.span
-                        layoutId="project-filter-pill"
-                        transition={{
-                          type: "spring",
-                          stiffness: 420,
-                          damping: 34,
-                        }}
-                        className="absolute inset-0 -z-10 rounded-full bg-accent"
-                      />
-                    ) : null}
-                    <span className="relative flex items-center gap-1.5">
-                      {category}
-                      <span
-                        className={cn(
-                          "font-mono text-[9px] tabular-nums",
-                          isActive ? "text-accent-foreground" : "text-muted",
-                        )}
-                      >
-                        {String(countFor(category)).padStart(2, "0")}
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
+                    <ProjectCard
+                      project={project}
+                      onOpen={() => setSelected(project)}
+                    />
+                  </motion.div>
+                ))}
+                <span
+                  aria-hidden
+                  className="w-[14%] shrink-0 sm:w-[11%] lg:w-[10%]"
+                />
+              </div>
             </div>
-          </LayoutGroup>
 
-          <p
-            aria-live="polite"
-            className="hidden font-mono text-[9px] uppercase tracking-[0.14em] text-muted sm:block"
-          >
-            Menampilkan {String(visibleProjects.length).padStart(2, "0")} dari{" "}
-            {String(projects.length).padStart(2, "0")}
-          </p>
-        </div>
+            <div className="mx-auto mt-5 flex max-w-[920px] items-center justify-between gap-4">
+              <button
+                type="button"
+                onClick={() => scrollToProject(activeIndex - 1)}
+                disabled={activeIndex === 0}
+                aria-label="Lihat proyek sebelumnya"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-strong transition-colors hover:border-accent/60 hover:text-accent-ink disabled:pointer-events-none disabled:opacity-35"
+              >
+                <ChevronLeft className="h-5 w-5" aria-hidden />
+              </button>
 
-        {/* Grid proyek */}
-        <motion.div
-          layout={!reduceMotion}
-          className="mt-6 grid gap-4 md:grid-cols-2"
-        >
-          <AnimatePresence mode="popLayout" initial={false}>
-            {visibleProjects.map((project, index) => {
-              const isFeatured = Boolean(project.featured) && showFeatured;
-
-              return (
-                <motion.div
-                  key={project.slug}
-                  layout={!reduceMotion}
-                  initial={{ opacity: 0, y: 22, scale: 0.985 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={
-                    reduceMotion
-                      ? { opacity: 1 }
-                      : { opacity: 0, y: -12, scale: 0.985 }
-                  }
-                  transition={{
-                    duration: 0.45,
-                    delay: reduceMotion ? 0 : Math.min(index * 0.05, 0.2),
-                    ease: [0.22, 1, 0.36, 1],
-                    layout: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-                  }}
-                  className={cn(
-                    "min-w-0",
-                    isFeatured && "md:col-span-2",
-                  )}
+              <div className="flex min-w-0 flex-col items-center gap-3">
+                <p
+                  aria-live="polite"
+                  className="text-sm font-medium tabular-nums text-muted-strong"
                 >
-                  <ProjectCard
-                    project={project}
-                    featured={isFeatured}
-                    onOpen={() => setSelected(project)}
-                  />
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
+                  {String(activeIndex + 1).padStart(2, "0")}{" "}
+                  <span className="text-muted">/</span>{" "}
+                  {String(projects.length).padStart(2, "0")}
+                </p>
+                <div
+                  role="group"
+                  aria-label="Pilih proyek"
+                  className="flex max-w-full flex-wrap justify-center gap-2"
+                >
+                  {projects.map((project, index) => (
+                    <button
+                      key={project.slug}
+                      type="button"
+                      onClick={() => scrollToProject(index)}
+                      aria-label={`Tampilkan proyek ${project.title}`}
+                      aria-current={index === activeIndex ? "true" : undefined}
+                      className={cn(
+                        "h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                        index === activeIndex
+                          ? "w-7 bg-accent"
+                          : "w-2 bg-border-strong hover:bg-muted",
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
 
-        {visibleProjects.length === 0 ? (
+              <button
+                type="button"
+                onClick={() => scrollToProject(activeIndex + 1)}
+                disabled={activeIndex === projects.length - 1}
+                aria-label="Lihat proyek berikutnya"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-strong transition-colors hover:border-accent/60 hover:text-accent-ink disabled:pointer-events-none disabled:opacity-35"
+              >
+                <ChevronRight className="h-5 w-5" aria-hidden />
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        {projects.length === 0 ? (
           <p className="mt-10 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted">
-            Belum ada proyek di kategori ini. Coba filter lain.
+            Belum ada proyek untuk ditampilkan.
           </p>
         ) : null}
 

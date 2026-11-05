@@ -2,6 +2,7 @@ import Image from "next/image";
 import {
   ArrowUpRight,
   Check,
+  Code2,
   Lock,
   MapPin,
   Search,
@@ -50,11 +51,17 @@ export default function ProjectArtwork({
           <span className="truncate">{url}</span>
         </span>
         <span className="hidden font-mono text-[6px] uppercase tracking-[0.14em] text-white/20 sm:block">
-          preview
+          {kind === "repository" ? "source repo" : "preview"}
         </span>
       </div>
 
-      <div className="relative min-h-0 flex-1" style={gridStyle}>
+      <div
+        className={cn(
+          "relative min-h-0 flex-1",
+          !project.image && "bg-[#090c10]",
+        )}
+        style={project.image ? undefined : gridStyle}
+      >
         {project.image ? (
           <Image
             src={project.image}
@@ -64,17 +71,19 @@ export default function ProjectArtwork({
             className="object-cover object-top"
           />
         ) : (
-          <Kind kind={kind} accent={accent} />
+          <Kind project={project} accent={accent} />
         )}
       </div>
     </div>
   );
 }
 
-type KindProps = { kind: Project["artwork"]["kind"]; accent: string };
+type KindProps = { project: Project; accent: string };
 
-function Kind({ kind, accent }: KindProps) {
-  switch (kind) {
+function Kind({ project, accent }: KindProps) {
+  switch (project.artwork.kind) {
+    case "repository":
+      return <RepositoryArt project={project} accent={accent} />;
     case "dashboard":
       return <Dashboard accent={accent} />;
     case "pos":
@@ -88,6 +97,57 @@ function Kind({ kind, accent }: KindProps) {
     case "portfolio":
       return <PortfolioArt accent={accent} />;
   }
+}
+
+function RepositoryArt({
+  project,
+  accent,
+}: {
+  project: Project;
+  accent: string;
+}) {
+  return (
+    <div className="flex h-full flex-col justify-between p-4 sm:p-6">
+      <div>
+        <div className="flex items-center gap-2 text-[8px] text-white/45 sm:text-[10px]">
+          <Code2 className="h-3.5 w-3.5" style={{ color: accent }} aria-hidden />
+          <span>AryaAgung09</span>
+          <span aria-hidden>/</span>
+          <span className="font-medium text-white/75">{project.slug}</span>
+        </div>
+        <h3 className="mt-5 max-w-2xl text-2xl font-semibold tracking-[-0.04em] text-white sm:mt-7 sm:text-4xl">
+          {project.title}
+        </h3>
+        <p className="mt-2 max-w-xl text-[10px] leading-5 text-white/55 sm:mt-3 sm:text-sm sm:leading-6">
+          {project.tagline}
+        </p>
+      </div>
+
+      <div>
+        <ul className="flex flex-wrap gap-1.5 sm:gap-2">
+          {project.tags.slice(0, 5).map((tag) => (
+            <li
+              key={tag}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono text-[7px] text-white/65 sm:text-[9px]"
+            >
+              {tag}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 sm:mt-5 sm:pt-4">
+          <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-white/35 sm:text-[9px]">
+            Public repository
+          </span>
+          <span
+            className="flex items-center gap-1.5 text-[8px] font-medium sm:text-[10px]"
+            style={{ color: accent }}
+          >
+            View source <ArrowUpRight className="h-3 w-3" aria-hidden />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Soft({ accent, value = 0.12 }: { accent: string; value?: number }) {

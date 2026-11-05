@@ -41,14 +41,7 @@ export default function SoftSkills() {
             description="Teknologi bisa dipelajari dalam hitungan minggu. Cara berpikir dan bekerja dengan orang lain adalah yang membuat sebuah proyek sampai ke garis akhir."
           />
 
-          <Reveal delay={0.2}>
-            <div className="mt-8 rounded-2xl border border-accent/25 bg-accent-soft p-4">
-              <p className="text-[13px] leading-6 text-foreground">
-                “Saya lebih suka bertanya satu pertanyaan bodoh di awal daripada
-                memperbaiki asumsi yang salah selama dua minggu.”
-              </p>
-            </div>
-          </Reveal>
+          
         </div>
 
         <ul className="grid gap-x-10 gap-y-2 sm:grid-cols-2">

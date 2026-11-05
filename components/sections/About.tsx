@@ -1,6 +1,4 @@
-import { Check } from "lucide-react";
 import { profile, stats } from "@/data/portfolio";
-import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import ProfileCard from "@/components/ui/ProfileCard";
@@ -9,19 +7,6 @@ export default function About() {
   return (
     <section id="tentang" className="scroll-mt-24 py-24 sm:py-32">
       <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-10">
-        <SectionHeading
-          index="01"
-          label="Tentang"
-          title={
-            <>
-              Bukan sekadar kode.
-              <br />
-              <span className="text-muted">Saya merancang pengalaman.</span>
-            </>
-          }
-          description="Di balik setiap antarmuka ada keputusan: data apa yang ditampilkan, bagaimana ia bergerak, dan apa yang terjadi ketika sesuatu gagal."
-        />
-
         <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[0.4fr_0.6fr] lg:gap-16">
           {/* Kartu identitas */}
           <Reveal direction="left">
@@ -97,43 +82,7 @@ export default function About() {
               ))}
             </div>
 
-            <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-2">
-              <Reveal>
-                <h3 className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted">
-                  Sedang dipelajari
-                </h3>
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {profile.learning.map((item) => (
-                    <li
-                      key={item}
-                      className="rounded-full border border-border px-3 py-1.5 text-[11px] text-muted-strong transition-colors hover:border-accent/50 hover:text-foreground"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-
-              <Reveal delay={0.08}>
-                <h3 className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted">
-                  Prinsip kerja
-                </h3>
-                <ul className="mt-3 space-y-2">
-                  {profile.principles.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2 text-[12px] leading-5 text-muted-strong"
-                    >
-                      <Check
-                        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-ink"
-                        aria-hidden
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            </div>
+            
           </div>
         </div>
       </div>

@@ -117,26 +117,33 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {project.description}
           </p>
 
-          <dl className="mt-6 grid grid-cols-3 gap-2">
-            {project.metrics.map((metric) => (
-              <div
-                key={metric.label}
-                className="rounded-xl border border-border bg-surface/60 p-3"
-              >
-                <dt className="text-[9px] leading-4 text-muted">
-                  {metric.label}
-                </dt>
-                <dd className="mt-1 text-lg font-semibold tracking-tight text-foreground">
-                  {metric.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          {project.metrics?.length ? (
+            <dl className="mt-6 grid grid-cols-3 gap-2">
+              {project.metrics.map((metric) => (
+                <div
+                  key={metric.label}
+                  className="rounded-xl border border-border bg-surface/60 p-3"
+                >
+                  <dt className="text-[9px] leading-4 text-muted">
+                    {metric.label}
+                  </dt>
+                  <dd className="mt-1 text-lg font-semibold tracking-tight text-foreground">
+                    {metric.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
 
-          <div className="mt-7 grid gap-7 sm:grid-cols-[1fr_0.8fr]">
+          <div
+            className={cn(
+              "mt-7 grid gap-7",
+              project.tags.length > 0 && "sm:grid-cols-[1fr_0.8fr]",
+            )}
+          >
             <div>
               <h3 className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
-                Yang saya kerjakan
+                Fitur &amp; cakupan
               </h3>
               <ul className="mt-3 space-y-2.5">
                 {project.highlights.map((highlight) => (
@@ -153,21 +160,23 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </ul>
             </div>
 
-            <div>
-              <h3 className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
-                Teknologi
-              </h3>
-              <ul className="mt-3 flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className="rounded-full border border-border px-2.5 py-1 font-mono text-[8.5px] uppercase tracking-[0.06em] text-muted-strong"
-                  >
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {project.tags.length > 0 ? (
+              <div>
+                <h3 className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                  Teknologi
+                </h3>
+                <ul className="mt-3 flex flex-wrap gap-1.5">
+                  {project.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-border px-2.5 py-1 font-mono text-[8.5px] uppercase tracking-[0.06em] text-muted-strong"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
 
           <div className="mt-7 flex flex-wrap items-center gap-2.5 border-t border-border pt-5">
@@ -178,7 +187,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-xs font-semibold text-accent-foreground transition-transform hover:-translate-y-0.5"
               >
-                Buka demo
+                {project.demoLabel ?? "Buka demo"}
                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
               </a>
             ) : null}
@@ -194,7 +203,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </a>
             ) : null}
             <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.12em] text-muted">
-              <ExternalLink className="h-3 w-3" aria-hidden /> studi kasus
+              <ExternalLink className="h-3 w-3" aria-hidden /> repositori proyek
             </span>
           </div>
         </div>

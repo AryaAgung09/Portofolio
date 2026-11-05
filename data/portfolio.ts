@@ -12,8 +12,7 @@
  *  3. Simpan foto cutout (PNG/WebP transparan) di /public/images/profile/
  *     lalu sesuaikan `profile.photo`, `photoWidth`, dan `photoHeight`.
  *
- *  Catatan: teks dan tautan proyek di bawah adalah placeholder realistis.
- *  Ganti dengan pencapaian dan tautan asli sebelum dipublikasikan.
+ *  Data proyek ditautkan ke repositori GitHub publik pemilik portofolio.
  * ============================================================================
  */
 
@@ -53,7 +52,7 @@ export type SkillCategory = "Frontend" | "Backend" | "Database" | "Tools";
 export interface Skill {
   /** Nama teknologi. */
   name: string;
-  /** Kunci ikon Simple Icons (react-icons/si). */
+  /** Kunci ikon teknologi dari components/ui/TechIcon.tsx. */
   icon: string;
   /** Kategori untuk pengelompokan kartu. */
   category: SkillCategory;
@@ -76,6 +75,7 @@ export type ProjectCategory = "Web App" | "Mobile" | "Backend";
 
 /** Jenis visual thumbnail yang digambar dengan CSS (tanpa aset gambar). */
 export type ArtworkKind =
+  | "repository"
   | "dashboard"
   | "pos"
   | "mobile"
@@ -104,6 +104,8 @@ export interface Project {
   tags: string[];
   /** URL demo langsung (opsional). */
   demoUrl?: string;
+  /** Label tautan demo, bila tujuannya bukan aplikasi langsung. */
+  demoLabel?: string;
   /** URL repositori (opsional). */
   repoUrl?: string;
   /**
@@ -119,8 +121,8 @@ export interface Project {
     /** Label kecil di artwork, misalnya nama domain. */
     url: string;
   };
-  /** Angka-angka penting yang tampil di modal. */
-  metrics: { label: string; value: string }[];
+  /** Fakta proyek yang tampil di modal, bila tersedia. */
+  metrics?: { label: string; value: string }[];
   /** Poin-poin kontribusi / fitur utama. */
   highlights: string[];
   /** Tandai satu proyek sebagai unggulan (kartu lebih besar). */
@@ -264,45 +266,32 @@ export const navigation: NavItem[] = [
 
 export const skills: Skill[] = [
   // Frontend
-  { name: "HTML & CSS", icon: "html5", category: "Frontend", note: "Semantik, layout, dan animasi", color: "#E34F26" },
   { name: "JavaScript", icon: "javascript", category: "Frontend", note: "ES2024, DOM, async patterns", color: "#F7DF1E" },
   { name: "TypeScript", icon: "typescript", category: "Frontend", note: "Type-safe app & API contracts", color: "#3178C6" },
   { name: "React", icon: "react", category: "Frontend", note: "Komponen, hooks, state", color: "#61DAFB" },
   { name: "Next.js", icon: "nextjs", category: "Frontend", note: "App Router, SSR, optimasi" },
   { name: "Tailwind CSS", icon: "tailwind", category: "Frontend", note: "Design system & responsif", color: "#06B6D4" },
+  { name: "Flutter", icon: "flutter", category: "Frontend", note: "Pengembangan aplikasi lintas platform", color: "#02569B" },
 
   // Backend
   { name: "Laravel", icon: "laravel", category: "Backend", note: "REST API, Eloquent, queue", color: "#FF2D20" },
   { name: "PHP", icon: "php", category: "Backend", note: "OOP, PSR, kompatibilitas", color: "#777BB4" },
   { name: "Node.js", icon: "node", category: "Backend", note: "Service, scripting, tooling", color: "#5FA04E" },
-  { name: "Express", icon: "express", category: "Backend", note: "Routing, middleware, auth" },
   { name: "Python", icon: "python", category: "Backend", note: "Scripting & analisis data", color: "#3776AB" },
-  { name: "REST API", icon: "rest", category: "Backend", note: "Desain endpoint & validasi" },
 
   // Database
   { name: "MySQL", icon: "mysql", category: "Database", note: "Relasi, index, query tuning", color: "#4479A1" },
-  { name: "PostgreSQL", icon: "postgresql", category: "Database", note: "Skema relasional & JSONB", color: "#4169E1" },
   { name: "Prisma", icon: "prisma", category: "Database", note: "Type-safe ORM & migrasi" },
-  { name: "MongoDB", icon: "mongodb", category: "Database", note: "Dokumen & agregasi", color: "#47A248" },
 
   // Tools
   { name: "Git & GitHub", icon: "git", category: "Tools", note: "Branching, review, CI dasar", color: "#F05032" },
-  { name: "Docker", icon: "docker", category: "Tools", note: "Container untuk development", color: "#2496ED" },
   { name: "Figma", icon: "figma", category: "Tools", note: "Wireframe & handoff desain", color: "#F24E1E" },
   { name: "Vercel", icon: "vercel", category: "Tools", note: "Deploy, preview, analytics" },
-  { name: "Linux", icon: "linux", category: "Tools", note: "CLI, server, permission", color: "#FCC624" },
-];
-
-/** Teknologi tambahan yang belum masuk daftar utama. */
-export const familiarTools = [
-  "Flutter",
-  "Firebase",
-  "Supabase",
-  "Alpine.js",
-  "Framer Motion",
-  "GSAP",
-  "Postman",
-  "GitHub Actions",
+  { name: "Microsoft Word", icon: "word", category: "Tools", note: "Pengolahan dan tata letak dokumen", color: "#2B579A" },
+  { name: "Microsoft Excel", icon: "excel", category: "Tools", note: "Pengolahan data, tabel, dan rumus", color: "#217346" },
+  { name: "Canva", icon: "canva", category: "Tools", note: "Desain visual dan materi presentasi", color: "#00C4CC" },
+  { name: "draw.io", icon: "drawio", category: "Tools", note: "Diagram alur dan pemodelan sistem", color: "#F08705" },
+  { name: "Visual Studio Code", icon: "vscode", category: "Tools", note: "Editor kode dan lingkungan pengembangan", color: "#007ACC" },
 ];
 
 /** Soft skills dan satu kalimat penjelasnya. */
@@ -349,155 +338,132 @@ export type ProjectFilter = (typeof projectCategories)[number];
 
 export const projects: Project[] = [
   {
-    slug: "ruangbaca",
-    title: "RuangBaca",
-    tagline: "Perpustakaan digital yang membuat peminjaman buku terasa seperti checkout.",
+    slug: "park-quest",
+    title: "Park Quest",
+    tagline: "Aplikasi parkir pintar dengan ketersediaan real-time dan gamifikasi.",
     description:
-      "Platform perpustakaan digital untuk mengelola katalog, anggota, peminjaman, dan denda dalam satu dashboard. Saya merancang skema database relasional, REST API, serta antarmuka admin yang tetap responsif ketika menampilkan ribuan judul.",
-    category: "Web App",
-    year: "2025",
-    role: "Full-stack Developer",
-    status: "Selesai",
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Tailwind CSS"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/",
-    artwork: { kind: "dashboard", accent: "#C6F24E", url: "ruangbaca.app" },
-    metrics: [
-      { label: "Judul terkelola", value: "2.4k" },
-      { label: "Waktu muat", value: "<1s" },
-      { label: "Uptime", value: "99.9%" },
-    ],
-    highlights: [
-      "Merancang 9 tabel relasional dan 24 endpoint REST dengan validasi berlapis.",
-      "Membangun dashboard admin dengan pencarian, filter, dan pagination server-side.",
-      "Menambahkan role-based access untuk admin, pustakawan, dan anggota.",
-      "Menulis unit test untuk alur peminjaman dan perhitungan denda.",
-    ],
-    featured: true,
-  },
-  {
-    slug: "kasirku",
-    title: "KasirKu",
-    tagline: "Point of sale ringan untuk UMKM yang tidak sempat belajar software rumit.",
-    description:
-      "Aplikasi kasir untuk warung dan kafe kecil: kelola produk, catat transaksi, cetak struk, dan lihat rekap harian. Fokus utamanya adalah alur tiga ketukan—pilih produk, bayar, selesai—agar tetap cepat saat antrean panjang.",
-    category: "Web App",
-    year: "2025",
-    role: "Full-stack Developer",
-    status: "Selesai",
-    tags: ["Laravel", "MySQL", "Tailwind CSS", "Alpine.js"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/",
-    artwork: { kind: "pos", accent: "#7DD3FC", url: "kasirku.id" },
-    metrics: [
-      { label: "Transaksi / hari", value: "180+" },
-      { label: "Error rate", value: "0.2%" },
-      { label: "Setup", value: "<5 mnt" },
-    ],
-    highlights: [
-      "Membangun alur transaksi cepat dengan dukungan keyboard dan barcode.",
-      "Menyimpan rekap penjualan harian dan ekspor CSV tanpa spreadsheet tambahan.",
-      "Menerapkan optimistic UI untuk keranjang agar terasa instan di perangkat lambat.",
-    ],
-  },
-  {
-    slug: "jejak",
-    title: "Jejak",
-    tagline: "Jurnal perjalanan yang mencatat tempat, bukan sekadar unggahan.",
-    description:
-      "Aplikasi mobile untuk mendokumentasikan perjalanan: pin lokasi, catatan singkat, foto, dan statistik jarak. Data disinkronkan ke cloud dan tetap bisa dibuka offline lewat cache lokal.",
+      "Aplikasi yang membantu pengguna menemukan slot parkir kosong menggunakan informasi ketersediaan real-time dan kontribusi pengguna. Berdasarkan deskripsi dan poster di Pamer.in, pengguna dapat mencari area parkir, berbagi informasi slot, memperoleh poin, menyelesaikan klaim harian, dan melihat leaderboard.",
     category: "Mobile",
     year: "2024",
-    role: "Mobile Developer",
+    role: "Anggota tim proyek PBL",
     status: "Selesai",
-    tags: ["Flutter", "Firebase", "Google Maps", "Riverpod"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/",
-    artwork: { kind: "mobile", accent: "#FCD34D", url: "jejak.app" },
-    metrics: [
-      { label: "Perjalanan", value: "120+" },
-      { label: "Offline-first", value: "Ya" },
-      { label: "Rilis", value: "v1.2" },
-    ],
+    tags: ["Aplikasi Mobile", "Parkir Pintar", "Gamifikasi"],
+    demoUrl:
+      "https://pbl.polibatam.ac.id/pamerinNew/detail.php?title=park-quest-sistem-parkir-pintar-dan-pendekatan-gamifikasi-&id=MjQ0MQ==&ta=NQ==&id_tim=Mjc3Mw==",
+    demoLabel: "Lihat di Pamer.in",
+    image: "/images/projects/park-quest-poster.png",
+    artwork: {
+      kind: "repository",
+      accent: "#F5C928",
+      url: "pbl.polibatam.ac.id / Pamer.in",
+    },
     highlights: [
-      "Menerapkan offline-first dengan antrean sinkronisasi saat koneksi kembali.",
-      "Mengintegrasikan peta, geocoding, dan penyimpanan foto terkompresi.",
-      "Mendesain ulang alur tambah perjalanan dari 7 langkah menjadi 3.",
+      "Membantu pengguna menemukan area dan slot parkir yang tersedia.",
+      "Memanfaatkan informasi ketersediaan parkir real-time dan kontribusi pengguna.",
+      "Mendukung berbagi informasi slot parkir.",
+      "Menggunakan poin, klaim harian, misi, dan leaderboard sebagai elemen gamifikasi.",
     ],
   },
   {
-    slug: "sirkuit-api",
-    title: "Sirkuit API",
-    tagline: "REST API manajemen event dengan autentikasi dan dokumentasi yang jelas.",
+    slug: "smart-lab",
+    title: "SMART LAB",
+    tagline: "Display ketersediaan laboratorium berbasis IoT.",
     description:
-      "Backend untuk platform event kampus: autentikasi JWT, manajemen peserta, tiket, dan notifikasi email. Dokumentasi OpenAPI dibuat sebagai kontrak agar tim frontend bisa bergerak paralel.",
-    category: "Backend",
-    year: "2024",
-    role: "Backend Developer",
-    status: "Selesai",
-    tags: ["Node.js", "Express", "MongoDB", "JWT", "OpenAPI"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/",
-    artwork: { kind: "api", accent: "#F0ABFC", url: "api.sirkuit.dev" },
-    metrics: [
-      { label: "Endpoint", value: "31" },
-      { label: "Latensi p95", value: "84ms" },
-      { label: "Test coverage", value: "87%" },
-    ],
-    highlights: [
-      "Mendesain autentikasi JWT dengan refresh token dan pemisahan role.",
-      "Menulis dokumentasi OpenAPI yang dipakai langsung oleh tim frontend.",
-      "Menambahkan rate limiting dan validasi payload untuk endpoint publik.",
-    ],
-  },
-  {
-    slug: "peta-umkm",
-    title: "PetaUMKM",
-    tagline: "Peta interaktif yang membantu warga menemukan UMKM di sekitar Batam.",
-    description:
-      "Direktori UMKM berbasis peta dengan kategori usaha, jam buka, dan tautan WhatsApp. Data dikurasi bersama komunitas, lalu ditampilkan dengan pencarian dan filter yang ramah pengguna.",
+      "Sistem untuk menampilkan status ketersediaan laboratorium secara real-time melalui display di dekat ruangan dan dashboard web. Menurut deskripsi Pamer.in, proyek ini juga dirancang untuk menampilkan ketersediaan dosen di ruang dosen serta terintegrasi dengan PenRu IF.",
     category: "Web App",
     year: "2025",
-    role: "Frontend Developer",
-    status: "Dalam pengembangan",
-    tags: ["React", "Leaflet", "Supabase", "Tailwind CSS"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/",
-    artwork: { kind: "map", accent: "#5EEAD4", url: "petaumkm.id" },
-    metrics: [
-      { label: "Titik UMKM", value: "240" },
-      { label: "Kategori", value: "12" },
-      { label: "Kontributor", value: "18" },
-    ],
+    role: "Anggota tim SMART LAB",
+    status: "Selesai",
+    tags: ["IoT", "Dashboard Web", "Monitoring Real-time"],
+    demoUrl:
+      "https://pbl.polibatam.ac.id/pamerinNew/detail.php?title=display-ketersediaan-laboratorium&id=MzMzMg==&ta=Ng==&id_tim=NDE5NQ==",
+    demoLabel: "Lihat di Pamer.in",
+    image: "/images/projects/smart-lab-poster.png",
+    artwork: {
+      kind: "repository",
+      accent: "#42A5F5",
+      url: "pbl.polibatam.ac.id / Pamer.in",
+    },
     highlights: [
-      "Membangun peta dengan clustering dan filter kategori yang responsif.",
-      "Menyediakan formulir kontribusi data dengan moderasi sederhana.",
-      "Mengoptimalkan render peta agar tetap mulus di perangkat mid-range.",
+      "Menampilkan status ruangan: tersedia, digunakan, atau maintenance.",
+      "Menyediakan display status di samping pintu laboratorium.",
+      "Mengelola informasi melalui dashboard web.",
+      "Merencanakan integrasi dengan PenRu IF.",
     ],
   },
   {
-    slug: "portofolio-2026",
-    title: "Portofolio 2026",
-    tagline: "Situs yang sedang kamu baca—dirancang sebagai sistem, bukan satu halaman.",
+    slug: "pesantrenkita",
+    title: "PESANTRENKITA",
+    tagline: "Aplikasi web terintegrasi untuk pengelolaan administrasi pesantren.",
     description:
-      "Portofolio ini dibangun dengan Next.js App Router, Tailwind CSS, Framer Motion, GSAP ScrollTrigger, dan Lenis. Semua konten dipisahkan ke satu file data, animasi menghormati prefers-reduced-motion, dan setiap section punya peran dalam alur cerita.",
+      "Proyek PBL untuk membantu pesantren mengelola data santri, kehadiran, perizinan, keuangan, dan laporan secara terpusat. Mengacu pada halaman Pamer.in dan poster proyek, sistem ini ditujukan untuk menggantikan proses manual dengan alur digital yang lebih tertata. Pengembangan menggunakan metode Agile secara iteratif dari analisis kebutuhan hingga pengujian.",
     category: "Web App",
     year: "2026",
-    role: "Designer & Developer",
+    role: "Anggota tim PBL618",
     status: "Selesai",
-    tags: ["Next.js", "TypeScript", "Framer Motion", "GSAP", "Tailwind CSS"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/",
-    artwork: { kind: "portfolio", accent: "#C4B5FD", url: "aryaagung.dev" },
-    metrics: [
-      { label: "Lighthouse", value: "98" },
-      { label: "Section", value: "9" },
-      { label: "Dependency", value: "6" },
-    ],
+    tags: [],
+    demoUrl:
+      "https://pbl.polibatam.ac.id/pamerinNew/detail.php?title=pesantrenkita---aplikasi-web-untuk-pengelolaan-santri-&id=NTIzNg==&ta=OA==&id_tim=Nzk0OA==",
+    demoLabel: "Lihat di Pamer.in",
+    image: "/images/projects/pesantrenkita-poster.png",
+    artwork: {
+      kind: "repository",
+      accent: "#48C987",
+      url: "pbl.polibatam.ac.id / Pamer.in",
+    },
     highlights: [
-      "Merancang design token dan mode gelap/terang dengan CSS variables.",
-      "Menggabungkan animasi masuk per elemen, parallax, dan timeline yang digambar saat scroll.",
-      "Menjaga konten tetap terbaca tanpa JavaScript dan menghormati reduced motion.",
+      "Pengelolaan data pribadi, riwayat pendidikan, dan status santri secara terpusat.",
+      "Pencatatan kehadiran dan perizinan santri secara digital.",
+      "Pengelolaan pemasukan, pengeluaran, dan donasi pesantren.",
+      "Dashboard serta laporan untuk pemantauan administrasi dan akademik.",
+    ],
+  },
+  {
+    slug: "smartops",
+    title: "SmartOps",
+    tagline: "Platform operasional untuk HR, payroll, keuangan, dan dokumen.",
+    description:
+      "Aplikasi manajemen operasional berbasis peran dengan modul karyawan, absensi, pengajuan, cuti, payroll, keuangan, dokumen, dan notifikasi. UI Next.js terhubung ke API server yang memeriksa sesi dan akses fitur sebelum membaca atau mengubah data relasional melalui Prisma. Repositori menjelaskan aplikasi ini sebagai proyek yang masih dikembangkan.",
+    category: "Web App",
+    year: "2026",
+    role: "Developer",
+    status: "Dalam pengembangan",
+    tags: ["Next.js", "TypeScript", "Prisma", "MySQL", "NextAuth.js"],
+    repoUrl: "https://github.com/AryaAgung09/SmartOps",
+    artwork: {
+      kind: "repository",
+      accent: "#C6F24E",
+      url: "github.com/AryaAgung09/SmartOps",
+    },
+    highlights: [
+      "Membangun alur pengelolaan karyawan, absensi, cuti, pengajuan, dan payroll.",
+      "Menambahkan modul keuangan, termasuk vendor, anggaran, pengeluaran, invoice, dan pembayaran.",
+      "Menggunakan sesi JWT serta pemeriksaan akses fitur pada halaman dan API.",
+      "Mengelola data relasional menggunakan Prisma dengan MariaDB/MySQL.",
+    ],
+  },
+  {
+    slug: "nexora-energy",
+    title: "NEXORA ENERGY",
+    tagline: "Website korporat konseptual untuk perusahaan energi dan pertambangan.",
+    description:
+      "Website perusahaan fiktif PT Nusantara Mineral Energi (NEXORA ENERGY), dibuat sebagai proyek demonstrasi. Cakupannya meliputi profil perusahaan, area bisnis, portofolio proyek, hubungan investor, berita, keberlanjutan, karier, dan kontak. Konten serta data operasional di dalamnya bersifat ilustratif, bukan informasi perusahaan nyata.",
+    category: "Web App",
+    year: "2026",
+    role: "Developer",
+    status: "Selesai",
+    tags: ["Next.js", "TypeScript", "GSAP", "Framer Motion", "Tailwind CSS"],
+    repoUrl: "https://github.com/AryaAgung09/NME",
+    artwork: {
+      kind: "repository",
+      accent: "#7DD3FC",
+      url: "github.com/AryaAgung09/NME",
+    },
+    highlights: [
+      "Membuat halaman korporat dengan rute detail dinamis untuk bisnis, proyek, dan berita.",
+      "Menyediakan pilihan bahasa Indonesia dan Inggris.",
+      "Menggabungkan animasi GSAP, Lenis, dan Framer Motion dengan dukungan reduced motion.",
+      "Formulir kontak memakai validasi server; README menyebut pengiriman email belum terhubung.",
     ],
   },
 ];
@@ -526,9 +492,9 @@ export const timeline: TimelineItem[] = [
   {
     type: "Pengalaman",
     year: "2025",
-    period: "2025 — Sekarang",
-    title: "Asisten Laboratorium Pemrograman",
-    organization: "Politeknik Negeri Batam",
+    period: "2025 Maret - juni",
+    title: "IT Support",
+    organization: "PT The Costume Magnifique",
     location: "Batam, Indonesia",
     description:
       "Mendampingi mahasiswa dalam praktikum pemrograman web dan basis data, mulai dari debugging hingga review struktur kode.",
@@ -537,49 +503,7 @@ export const timeline: TimelineItem[] = [
       "Menyusun modul praktikum dan studi kasus yang dipakai lintas kelas.",
     ],
     tags: ["Teaching", "Web Development", "Mentoring"],
-    current: true,
-  },
-  {
-    type: "Pengalaman",
-    year: "2024",
-    period: "2024 — 2025",
-    title: "Web Developer Intern",
-    organization: "PT Digital Nusantara",
-    location: "Batam, Indonesia",
-    description:
-      "Magang di tim produk digital, mengerjakan dashboard internal dan integrasi API untuk kebutuhan operasional perusahaan.",
-    highlights: [
-      "Memangkas waktu muat dashboard sekitar 40% lewat query tuning dan caching.",
-      "Berkolaborasi dengan desainer dan tim operasional dalam siklus dua minggu.",
-    ],
-    tags: ["Laravel", "MySQL", "REST API", "Agile"],
-  },
-  {
-    type: "Sertifikasi",
-    year: "2024",
-    period: "2024",
-    title: "Belajar Pengembangan Web Intermediate",
-    organization: "Dicoding Indonesia",
-    location: "Online",
-    description:
-      "Kelas intensif tentang arsitektur aplikasi web, konsumsi API, testing, dan standar aksesibilitas.",
-    tags: ["Web Fundamentals", "Testing", "Accessibility"],
-    credentialUrl: "https://www.dicoding.com/",
-  },
-  {
-    type: "Organisasi",
-    year: "2023",
-    period: "2023 — 2024",
-    title: "Staff Divisi Media & Teknologi",
-    organization: "Himpunan Mahasiswa TRPL",
-    location: "Batam, Indonesia",
-    description:
-      "Mengelola situs dan media sosial himpunan, serta menjadi tim teknis untuk acara kampus.",
-    highlights: [
-      "Membangun ulang situs himpunan bersama tiga anggota tim.",
-      "Menjadi dokumentator dan operator teknis di lima acara jurusan.",
-    ],
-    tags: ["Teamwork", "Leadership", "Web"],
+    current: false,
   },
   {
     type: "Pendidikan",
@@ -590,7 +514,7 @@ export const timeline: TimelineItem[] = [
     location: "Batam, Indonesia",
     description:
       "Aktif dalam kegiatan organisasi sekolah dan kompetisi yang melatih komunikasi, riset, serta disiplin diri.",
-    tags: ["IPS", "Organisasi", "Public Speaking"],
+    tags: ["IPS", "Organisasi",],
   },
 ];
 

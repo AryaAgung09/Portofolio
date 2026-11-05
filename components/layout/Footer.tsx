@@ -5,7 +5,6 @@ import {
   Radio,
 } from "lucide-react";
 import { navigation, profile } from "@/data/portfolio";
-import { currentYear } from "@/lib/utils";
 import LocalTime from "@/components/ui/LocalTime";
 import SocialLinks from "@/components/ui/SocialLinks";
 
@@ -102,12 +101,6 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {currentYear()} {profile.name}. Dibuat dengan rasa ingin tahu.
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em]">
-            Next.js · Tailwind CSS · Framer Motion · GSAP
-          </p>
           <a
             href="#beranda"
             className="group inline-flex items-center gap-2 font-medium text-muted-strong transition-colors hover:text-accent-ink"
@@ -118,14 +111,6 @@ export default function Footer() {
             </span>
           </a>
         </div>
-
-        <p className="mt-6 text-[10px] leading-4 text-muted">
-          Seluruh konten dapat disesuaikan di{" "}
-          <code className="font-mono text-[10px] text-muted-strong">
-            data/portfolio.ts
-          </code>
-          .
-        </p>
       </div>
     </footer>
   );
