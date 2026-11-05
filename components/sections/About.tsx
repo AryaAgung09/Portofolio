@@ -7,7 +7,18 @@ export default function About() {
   return (
     <section id="tentang" className="scroll-mt-24 py-24 sm:py-32">
       <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-10">
-        <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[0.4fr_0.6fr] lg:gap-16">
+        <Reveal>
+          <p className="mb-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
+            <span className="text-accent-ink">01</span>
+            <span aria-hidden className="h-px w-10 bg-border-strong" />
+            <span>Tentang</span>
+          </p>
+          <h2 className="text-5xl font-semibold leading-[0.95] tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
+            Tentang saya
+          </h2>
+        </Reveal>
+
+        <div className="mt-10 grid gap-12 lg:mt-14 lg:grid-cols-[0.4fr_0.6fr] lg:gap-16">
           {/* Kartu identitas */}
           <Reveal direction="left">
             <ProfileCard
