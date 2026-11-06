@@ -897,32 +897,52 @@ const Lanyard = ({
   const settingsRef = useRef<Settings | null>(null);
   const applyRef = useRef<(() => void) | null>(null);
 
-  settingsRef.current = {
-    frontImage,
-    backImage,
-    imageFit: imageFit === 'contain' ? 'contain' : 'cover',
-    cardColor,
-    orientation: orientation === 'landscape' ? 'landscape' : 'portrait',
-    finish,
-    cornerRadius,
-    size,
+  useEffect(() => {
+    settingsRef.current = {
+      frontImage,
+      backImage,
+      imageFit: imageFit === 'contain' ? 'contain' : 'cover',
+      cardColor,
+      orientation: orientation === 'landscape' ? 'landscape' : 'portrait',
+      finish,
+      cornerRadius,
+      size,
+      anchor,
+      strapLength,
+      strapImage,
+      strapColor,
+      strapWidth,
+      metal,
+      gravity,
+      damping,
+      elasticity,
+      breeze,
+      interactive,
+      intro
+    };
+    applyRef.current?.();
+  }, [
     anchor,
-    strapLength,
-    strapImage,
-    strapColor,
-    strapWidth,
-    metal,
-    gravity,
+    backImage,
+    breeze,
+    cardColor,
+    cornerRadius,
     damping,
     elasticity,
-    breeze,
+    finish,
+    frontImage,
+    gravity,
+    imageFit,
     interactive,
-    intro
-  };
-
-  useEffect(() => {
-    applyRef.current?.();
-  });
+    intro,
+    metal,
+    orientation,
+    size,
+    strapColor,
+    strapImage,
+    strapLength,
+    strapWidth
+  ]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -1096,7 +1116,8 @@ const Lanyard = ({
       foilUniforms.foilKey.value.set(-2.5, 4, 6).normalize().transformDirection(camera.matrixWorldInverse);
       foilUniforms.foilFill.value.set(3, -1, 4).normalize().transformDirection(camera.matrixWorldInverse);
       foilUniforms.foilTop.value.set(0.5, 4.5, 8).normalize().transformDirection(camera.matrixWorldInverse);
-      const anchorX = ((ANCHORS[s.anchor] ?? 0.5) - 0.5) * viewWidth;
+      const anchor = isCompact() ? 'center' : s.anchor;
+      const anchorX = ((ANCHORS[anchor] ?? 0.5) - 0.5) * viewWidth;
       const anchorY = viewHeight / 2 + 0.2;
       const cardTop = viewHeight / 2 - viewHeight * mix(0.12, 0.42, clamp(s.strapLength, 0, 1));
       const hangTop = cardTop + (layout.hangY - layout.height / 2);
@@ -1128,7 +1149,7 @@ const Lanyard = ({
       if (framingKey !== applied.framingKey) {
         frameView();
         if (!placed) {
-          placeHanging(sim, layout, s.intro && !reducedMotion);
+          placeHanging(sim, layout, s.intro && !reducedMotion && !isCompact());
           placed = true;
         } else if (layoutKey !== applied.layoutKey) {
           placeHanging(sim, layout, false);
@@ -1294,13 +1315,17 @@ const Lanyard = ({
         twistDamping: 3,
         grip: 40,
         gripDamping: 6,
-        breeze: reducedMotion || isCompact() ? 0 : clamp(s.breeze, 0, 1)
+        breeze: reducedMotion || !isCompact() ? 0 : clamp(s.breeze, 0, 1)
       };
     };
 
     const tick = (now: number) => {
       raf = 0;
       if (!alive) return;
+      if (isCompact() && now - last < 1000 / 30) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
       const dt = Math.min(1 / 30, Math.max(1 / 240, (now - last) / 1000));
       last = now;
       time += dt;

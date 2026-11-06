@@ -351,7 +351,7 @@ export const projects: Project[] = [
     demoUrl:
       "https://pbl.polibatam.ac.id/pamerinNew/detail.php?title=park-quest-sistem-parkir-pintar-dan-pendekatan-gamifikasi-&id=MjQ0MQ==&ta=NQ==&id_tim=Mjc3Mw==",
     demoLabel: "Lihat di Pamer.in",
-    image: "/images/projects/park-quest-poster.png",
+    image: "/images/projects/park-quest-poster.webp",
     artwork: {
       kind: "repository",
       accent: "#F5C928",
@@ -378,7 +378,7 @@ export const projects: Project[] = [
     demoUrl:
       "https://pbl.polibatam.ac.id/pamerinNew/detail.php?title=display-ketersediaan-laboratorium&id=MzMzMg==&ta=Ng==&id_tim=NDE5NQ==",
     demoLabel: "Lihat di Pamer.in",
-    image: "/images/projects/smart-lab-poster.png",
+    image: "/images/projects/smart-lab-poster.webp",
     artwork: {
       kind: "repository",
       accent: "#42A5F5",
@@ -454,7 +454,7 @@ export const projects: Project[] = [
     status: "Selesai",
     tags: ["Next.js", "TypeScript", "GSAP", "Framer Motion", "Tailwind CSS"],
     repoUrl: "https://github.com/AryaAgung09/NME",
-    image: "/images/projects/nme-homepage.png",
+    image: "/images/projects/nme-homepage.webp",
     artwork: {
       kind: "repository",
       accent: "#7DD3FC",

@@ -288,14 +288,14 @@ const PARTICLE_DRIFT_SOURCE = '<!doctype html>\n' +
 '            });\n' +
 '\n' +
 '            function initParticles() {\n' +
-'                nodes = Array.from({ length: compact ? 28 : 90 }).map(() => ({\n' +
+'                nodes = Array.from({ length: compact ? 18 : 56 }).map(() => ({\n' +
 '                    x: Math.random() * width,\n' +
 '                    y: Math.random() * height,\n' +
 '                    vy: (Math.random() * 0.4) + 0.1,\n' +
 '                    char: chars[Math.floor(Math.random() * chars.length)]\n' +
 '                }));\n' +
 '\n' +
-'                beams = Array.from({ length: compact ? 6 : 25 }).map(() => ({\n' +
+'                beams = Array.from({ length: compact ? 4 : 16 }).map(() => ({\n' +
 '                    x: Math.random() * width,\n' +
 '                    y: Math.random() * height,\n' +
 '                    length: Math.random() * 100 + 50,\n' +
@@ -309,7 +309,7 @@ const PARTICLE_DRIFT_SOURCE = '<!doctype html>\n' +
 '\n' +
 '            function draw(now = performance.now()) {\n' +
 '                if (document.hidden) return;\n' +
-'                if (compact && now - lastFrame < 1000 / 30) {\n' +
+'                if (now - lastFrame < 1000 / 30) {\n' +
 '                    requestAnimationFrame(draw);\n' +
 '                    return;\n' +
 '                }\n' +

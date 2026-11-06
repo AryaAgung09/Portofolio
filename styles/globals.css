@@ -176,6 +176,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     @apply font-sans;

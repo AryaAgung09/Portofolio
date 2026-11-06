@@ -46,9 +46,9 @@ export default function About() {
           {/* Narasi */}
           <div>
             <Reveal direction="right">
-              <p className="max-w-2xl text-xl leading-8 tracking-tight text-foreground sm:text-[1.35rem] sm:leading-9">
+              <p className="mx-auto max-w-2xl text-center text-xl leading-8 tracking-tight text-foreground sm:text-[1.35rem] sm:leading-9 lg:mx-0 lg:text-left">
                 Saya {profile.shortName}, mahasiswa {profile.major} di{" "}
-                {profile.university}. Saya memiliki ketertarikan dalam pengembangan perangkat lunak, khususnya web development..
+                {profile.university}. Saya memiliki ketertarikan dalam pengembangan perangkat lunak, khususnya web development.
               </p>
             </Reveal>
 
@@ -59,7 +59,7 @@ export default function About() {
                   direction="right"
                   delay={0.06 + index * 0.05}
                 >
-                  <p className="max-w-2xl text-[15px] leading-7 text-muted sm:text-base sm:leading-8">
+                  <p className="mx-auto max-w-2xl text-center text-[15px] leading-7 text-muted sm:text-base sm:leading-8 lg:mx-0 lg:text-left">
                     {paragraph}
                   </p>
                 </Reveal>
