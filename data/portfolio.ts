@@ -444,16 +444,17 @@ export const projects: Project[] = [
   },
   {
     slug: "nexora-energy",
-    title: "NEXORA ENERGY",
-    tagline: "Website korporat konseptual untuk perusahaan energi dan pertambangan.",
+    title: "NUSANTARA MINERAL ENERGI",
+    tagline: "Menggerakkan potensi, membangun masa depan.",
     description:
-      "Website perusahaan fiktif PT Nusantara Mineral Energi (NEXORA ENERGY), dibuat sebagai proyek demonstrasi. Cakupannya meliputi profil perusahaan, area bisnis, portofolio proyek, hubungan investor, berita, keberlanjutan, karier, dan kontak. Konten serta data operasional di dalamnya bersifat ilustratif, bukan informasi perusahaan nyata.",
+      "Website korporat konseptual PT Nusantara Mineral Energi (NME) yang menampilkan narasi “Menggerakkan potensi, membangun masa depan” serta profil perusahaan, area bisnis, proyek, hubungan investor, berita, keberlanjutan, karier, dan kontak. Konten dan data operasional bersifat ilustratif, bukan informasi perusahaan nyata.",
     category: "Web App",
     year: "2026",
     role: "Developer",
     status: "Selesai",
     tags: ["Next.js", "TypeScript", "GSAP", "Framer Motion", "Tailwind CSS"],
     repoUrl: "https://github.com/AryaAgung09/NME",
+    image: "/images/projects/nme-homepage.png",
     artwork: {
       kind: "repository",
       accent: "#7DD3FC",
