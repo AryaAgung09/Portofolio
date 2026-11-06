@@ -430,6 +430,7 @@ export const projects: Project[] = [
     status: "Dalam pengembangan",
     tags: ["Next.js", "TypeScript", "Prisma", "MySQL", "NextAuth.js"],
     repoUrl: "https://github.com/AryaAgung09/SmartOps",
+    image: "/images/projects/smartops-hr-dashboard.png",
     artwork: {
       kind: "repository",
       accent: "#C6F24E",
