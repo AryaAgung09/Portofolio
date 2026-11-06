@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Send } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import { EASE_OUT } from "@/lib/motion";
+import { useIntroFinished } from "@/components/providers/Providers";
 import SocialLinks from "@/components/ui/SocialLinks";
 import Typewriter from "./hero/Typewriter";
 
@@ -13,31 +14,39 @@ const Lanyard = dynamic(() => import("@/components/Lanyard"), {
 });
 
 export default function Hero() {
+  const introFinished = useIntroFinished();
+
   return (
     <section
       id="beranda"
       className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden pb-10 pt-20 sm:pt-24 lg:block lg:pb-16 lg:pt-28"
     >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.18, ease: EASE_OUT }}
+        initial={{ opacity: 0, y: 36, scale: 0.96 }}
+        animate={
+          introFinished
+            ? { opacity: 1, y: 0, scale: 1 }
+            : { opacity: 0, y: 36, scale: 0.96 }
+        }
+        transition={{ duration: 0.48, ease: EASE_OUT }}
         className="relative z-10 h-[clamp(220px,32svh,300px)] w-full max-w-[360px] shrink-0 lg:pointer-events-none lg:absolute lg:inset-0 lg:z-0 lg:h-full lg:max-w-none"
       >
-        <Lanyard
-          frontImage={profile.photo}
-          imageFit="contain"
-          size={0.5}
-          anchor="right"
-          strapColor="#17191d"
-          strapWidth={0.7}
-          strapLength={0.58}
-          breeze={0.12}
-          metal="silver"
-          finish="glossy"
-          interactive
-          className="pointer-events-auto h-full w-full"
-        />
+        {introFinished ? (
+          <Lanyard
+            frontImage={profile.photo}
+            imageFit="contain"
+            size={0.5}
+            anchor="right"
+            strapColor="#17191d"
+            strapWidth={0.7}
+            strapLength={0.42}
+            breeze={0.12}
+            metal="silver"
+            finish="glossy"
+            interactive
+            className="pointer-events-auto h-full w-full"
+          />
+        ) : null}
       </motion.div>
 
       <div className="relative mx-auto grid w-full max-w-[1240px] items-center gap-2 px-5 sm:px-8 lg:pointer-events-none lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-10">

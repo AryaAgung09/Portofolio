@@ -2,8 +2,21 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { MotionConfig } from "framer-motion";
-import { useEffect } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import type { ReactNode } from "react";
+import LoadingScreen from "@/components/ui/LoadingScreen";
+
+const IntroFinishedContext = createContext(false);
+
+export function useIntroFinished() {
+  return useContext(IntroFinishedContext);
+}
 
 /**
  * Provider global:
@@ -12,6 +25,9 @@ import type { ReactNode } from "react";
  * - Lenis: smooth scrolling + sinkronisasi dengan GSAP ScrollTrigger.
  */
 export function Providers({ children }: { children: ReactNode }) {
+  const [introFinished, setIntroFinished] = useState(false);
+  const finishIntro = useCallback(() => setIntroFinished(true), []);
+
   return (
     <NextThemesProvider
       attribute="class"
@@ -22,8 +38,11 @@ export function Providers({ children }: { children: ReactNode }) {
       storageKey="arya-theme"
     >
       <MotionConfig reducedMotion="user">
-        {children}
-        <SmoothScroll />
+        <IntroFinishedContext.Provider value={introFinished}>
+          {children}
+          <LoadingScreen onComplete={finishIntro} />
+          <SmoothScroll />
+        </IntroFinishedContext.Provider>
       </MotionConfig>
     </NextThemesProvider>
   );
