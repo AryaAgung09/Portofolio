@@ -484,7 +484,7 @@ export const timeline: TimelineItem[] = [
     description:
       "Mendalami rekayasa perangkat lunak dari hulu ke hilir: analisis kebutuhan, perancangan sistem, pemrograman web dan mobile, basis data, sampai manajemen proyek.",
     highlights: [
-      "IPK saat ini 3.72 / 4.00.",
+      "Berperan aktif dalam pengerjaan proyek riil industri dalam PBL (Project Based Learning)",
       "Fokus pada pengembangan web full-stack dan arsitektur backend.",
     ],
     tags: ["Software Engineering", "Web", "Database", "Project Management"],
@@ -498,10 +498,10 @@ export const timeline: TimelineItem[] = [
     organization: "PT The Costume Magnifique",
     location: "Batam, Indonesia",
     description:
-      "Mendampingi mahasiswa dalam praktikum pemrograman web dan basis data, mulai dari debugging hingga review struktur kode.",
+      "Berpengalaman dalam melakukan troubleshooting perangkat lunak, instalasi aplikasi kerja sesuai standar perusahaan, serta memastikan kelancaran sistem komputer karyawan guna mendukung produktivitas operasional.",
     highlights: [
-      "Membimbing 60+ mahasiswa per semester.",
-      "Menyusun modul praktikum dan studi kasus yang dipakai lintas kelas.",
+      "konfigurasi perangkat pendukung rapat dan operasional harian.",
+      "Bekerja sama dengan tim pengembang (developer) untuk mendiskusikan temuan bug, menguji ulang hasil perbaikan (patch), dan memastikan sistem kembali stabil.",
     ],
     tags: ["Teaching", "Web Development", "Mentoring"],
     current: false,
