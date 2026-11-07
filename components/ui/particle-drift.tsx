@@ -529,6 +529,17 @@ function buildFocusedDocument(
         mode,
       })
     : definition.source;
+  const focusedSource = patchedSource
+    .replace(/^\s*<script src="[^"]+"><\/script>\n/gm, "")
+    .replace(
+      /^\s*<link href="https:\/\/fonts\.googleapis\.com[^"]+" rel="stylesheet">\n/gm,
+      "",
+    )
+    .replace("            gsap.registerPlugin(ScrollTrigger);\n", "")
+    .replace(
+      /            \/\/ --- GSAP Timeline Reveals ---[\s\S]*?(?=        \}\);\n    <\/script>)/,
+      "",
+    );
   const focusStyle = `<style data-threeui-focus>
 html, body { width: 100% !important; height: 100% !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; background: ${background} !important; }
 body { position: relative !important; display: flex !important; align-items: center !important; justify-content: center !important; }
@@ -617,7 +628,7 @@ ${definition.focusCss ?? ""}
   window.addEventListener("load", isolate, { once: true });
 })();
 </script>`;
-  return patchedSource
+  return focusedSource
     .replace(/<head([^>]*)>/i, `<head$1>${controlScript}${focusStyle}`)
     .replace(/<\/body>/i, `${focusScript}</body>`);
 }
