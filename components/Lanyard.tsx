@@ -10,7 +10,7 @@ type Orientation = 'portrait' | 'landscape';
 type Finish = 'glossy' | 'matte' | 'holographic' | 'metallic';
 type Metal = 'graphite' | 'silver' | 'gold';
 type Anchor = 'left' | 'center' | 'right';
-type ImageFit = 'cover' | 'contain';
+type ImageFit = 'cover' | 'contain' | 'fill';
 type Rgb = [number, number, number];
 type Point = { clientX: number; clientY: number };
 
@@ -26,6 +26,7 @@ export interface LanyardProps {
   imageFit?: ImageFit;
   cardColor?: string;
   orientation?: Orientation;
+  cardAspectRatio?: number;
   finish?: Finish;
   cornerRadius?: number;
   size?: number;
@@ -51,6 +52,7 @@ interface Settings {
   imageFit: ImageFit;
   cardColor: string;
   orientation: Orientation;
+  cardAspectRatio?: number;
   finish: Finish;
   cornerRadius: number;
   size: number;
@@ -376,8 +378,17 @@ const loadImage = (
   return promise;
 };
 
-const cardLayout = (orientation: Orientation, cornerRadius: number): CardLayout => {
-  const [width, height] = CARD_SIZES[orientation] || CARD_SIZES.portrait;
+const cardLayout = (
+  orientation: Orientation,
+  cornerRadius: number,
+  cardAspectRatio?: number
+): CardLayout => {
+  const [defaultWidth, defaultHeight] = CARD_SIZES[orientation] || CARD_SIZES.portrait;
+  const width = defaultWidth;
+  const height =
+    orientation === 'portrait' && cardAspectRatio && cardAspectRatio > 0
+      ? width / cardAspectRatio
+      : defaultHeight;
   const radius = mix(0.03, Math.min(width, height) * 0.2, clamp(cornerRadius, 0, 1));
   const slot = { width: 0.34, height: 0.07, y: height / 2 - 0.13 };
   const ringY = height / 2 - 0.055;
@@ -585,6 +596,11 @@ const drawFitted = (
   height: number,
   fit: ImageFit
 ) => {
+  if (fit === 'fill') {
+    ctx.drawImage(image, 0, 0, width, height);
+    return;
+  }
+
   const scale = (fit === 'contain' ? Math.min : Math.max)(width / image.width, height / image.height);
   const w = image.width * scale;
   const h = image.height * scale;
@@ -875,6 +891,7 @@ const Lanyard = ({
   imageFit = 'cover',
   cardColor = '#ffffff',
   orientation = 'portrait',
+  cardAspectRatio,
   finish = 'glossy',
   cornerRadius = 0.3,
   size = 0.6,
@@ -901,9 +918,10 @@ const Lanyard = ({
     settingsRef.current = {
       frontImage,
       backImage,
-      imageFit: imageFit === 'contain' ? 'contain' : 'cover',
+      imageFit: imageFit === 'fill' || imageFit === 'contain' ? imageFit : 'cover',
       cardColor,
       orientation: orientation === 'landscape' ? 'landscape' : 'portrait',
+      cardAspectRatio,
       finish,
       cornerRadius,
       size,
@@ -926,6 +944,7 @@ const Lanyard = ({
     backImage,
     breeze,
     cardColor,
+    cardAspectRatio,
     cornerRadius,
     damping,
     elasticity,
@@ -1129,9 +1148,9 @@ const Lanyard = ({
 
     const apply = () => {
       const s = settingsRef.current!;
-      const layoutKey = `${s.orientation}|${s.cornerRadius}`;
+      const layoutKey = `${s.orientation}|${s.cornerRadius}|${s.cardAspectRatio}`;
       if (layoutKey !== applied.layoutKey) {
-        layout = cardLayout(s.orientation, s.cornerRadius);
+        layout = cardLayout(s.orientation, s.cornerRadius, s.cardAspectRatio);
         const geometry = buildCardGeometry(layout);
         bodyMesh.geometry.dispose();
         frontMesh.geometry.dispose();

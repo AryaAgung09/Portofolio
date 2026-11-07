@@ -176,7 +176,7 @@ export const profile = {
   ],
   /** Kalimat utama di hero (satu baris pendukung). */
   headline:
-    "Saya membangun aplikasi web yang rapi di balik layar dan nyaman dipakai di depan layar.",
+    "Saya memiliki ketertarikan dalam dunia teknologi dan selalu bersemangat mempelajari hal baru, mulai dari logika pemrograman hingga bagaimana sebuah karya dapat dinikmati oleh penggunanya.",
   /** Deskripsi pendek di hero. */
   intro:
     "Mahasiswa Teknologi Rekayasa Perangkat Lunak (TRPL), Jurusan Teknik Informatika di Politeknik Negeri Batam yang memiliki minat dalam pengembangan aplikasi web dan mobile  Berpengalaman mengerjakan berbagai proyek  selama perkuliahan serta terbiasa menghadapi dan menyelesaikan permasalahan teknis pada komputer dan pengembangan sistem. Memiliki kemampuan problem solving yang baik, cepat belajar, dan selalu bersemangat untuk mempelajari hal-hal baru di bidang teknologi",

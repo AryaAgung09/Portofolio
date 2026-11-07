@@ -33,9 +33,11 @@ export default function Hero() {
       >
         {introFinished ? (
           <Lanyard
-            frontImage={profile.photo}
-            imageFit="contain"
+            frontImage="/images/profile/Hijau Dan Putih Modern Panitia KKN ID Card.jpg"
+            backImage="/images/profile/Beige and Navy Modern Creative Student ID Card.png"
+            imageFit="fill"
             size={0.5}
+            cardAspectRatio={0.64}
             anchor="right"
             strapColor="#17191d"
             strapWidth={0.7}
