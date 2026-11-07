@@ -32,14 +32,21 @@ export default function Footer() {
                 aria-hidden
               />
             </a>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-muted">
+            <p className="mt-4 hidden max-w-sm text-sm leading-6 text-muted md:block">
               Terbuka untuk magang, proyek freelance kecil, atau sekadar
               bertukar pikiran soal produk dan teknologi.
             </p>
-            <SocialLinks className="mt-6" size="sm" />
+            <SocialLinks
+              className="mt-4 md:mt-6"
+              size="sm"
+              icons={["linkedin", "github"]}
+            />
           </div>
 
-          <nav aria-label="Tautan cepat">
+          <nav
+            aria-label="Tautan cepat"
+            className="hidden md:block"
+          >
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
               Navigasi
             </p>
@@ -57,7 +64,7 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <div>
+          <div className="hidden md:block">
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
               Lokasi & waktu
             </p>

@@ -29,16 +29,19 @@ type SocialLinksProps = {
   inverted?: boolean;
   /** Ukuran tombol. */
   size?: "sm" | "md";
+  /** Batasi ikon yang ditampilkan bila perlu. */
+  icons?: (typeof socials)[number]["icon"][];
 };
 
 export default function SocialLinks({
   className,
   inverted = false,
   size = "md",
+  icons,
 }: SocialLinksProps) {
   return (
     <ul className={cn("flex flex-wrap items-center gap-2.5", className)}>
-      {socials.map((social) => {
+      {socials.filter((social) => !icons || icons.includes(social.icon)).map((social) => {
         const external = social.href.startsWith("http");
 
         return (

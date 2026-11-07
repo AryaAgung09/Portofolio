@@ -32,6 +32,7 @@ export interface LanyardProps {
   size?: number;
   anchor?: Anchor;
   strapLength?: number;
+  compactStrapLength?: number;
   strapImage?: string;
   strapColor?: string;
   strapWidth?: number;
@@ -58,6 +59,7 @@ interface Settings {
   size: number;
   anchor: Anchor;
   strapLength: number;
+  compactStrapLength?: number;
   strapImage?: string;
   strapColor: string;
   strapWidth: number;
@@ -897,6 +899,7 @@ const Lanyard = ({
   size = 0.6,
   anchor = 'center',
   strapLength = 0.5,
+  compactStrapLength,
   strapImage,
   strapColor = '#111111',
   strapWidth = 0.65,
@@ -927,6 +930,7 @@ const Lanyard = ({
       size,
       anchor,
       strapLength,
+      compactStrapLength,
       strapImage,
       strapColor,
       strapWidth,
@@ -946,6 +950,7 @@ const Lanyard = ({
     cardColor,
     cardAspectRatio,
     cornerRadius,
+    compactStrapLength,
     damping,
     elasticity,
     finish,
@@ -1138,7 +1143,13 @@ const Lanyard = ({
       const anchor = isCompact() ? 'center' : s.anchor;
       const anchorX = ((ANCHORS[anchor] ?? 0.5) - 0.5) * viewWidth;
       const anchorY = viewHeight / 2 + 0.2;
-      const cardTop = viewHeight / 2 - viewHeight * mix(0.12, 0.42, clamp(s.strapLength, 0, 1));
+      const strapLength =
+        isCompact() && s.compactStrapLength !== undefined
+          ? s.compactStrapLength
+          : s.strapLength;
+      const cardTop =
+        viewHeight / 2 -
+        viewHeight * mix(0.12, 0.42, clamp(strapLength, 0, 1));
       const hangTop = cardTop + (layout.hangY - layout.height / 2);
       sim.anchor.set(anchorX, anchorY, 0);
       configureSimulation(sim, layout, anchorY - hangTop);
@@ -1164,11 +1175,11 @@ const Lanyard = ({
         ring.position.set(0, layout.ringY, 0);
         applied.framingKey = '';
       }
-      const framingKey = `${layoutKey}|${s.size}|${s.anchor}|${s.strapLength}|${view.width}|${view.height}`;
+      const framingKey = `${layoutKey}|${s.size}|${s.anchor}|${s.strapLength}|${s.compactStrapLength}|${isCompact()}|${view.width}|${view.height}`;
       if (framingKey !== applied.framingKey) {
         frameView();
         if (!placed) {
-          placeHanging(sim, layout, s.intro && !reducedMotion && !isCompact());
+          placeHanging(sim, layout, s.intro && !reducedMotion);
           placed = true;
         } else if (layoutKey !== applied.layoutKey) {
           placeHanging(sim, layout, false);

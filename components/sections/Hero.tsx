@@ -29,7 +29,7 @@ export default function Hero() {
             : { opacity: 0, y: 36, scale: 0.96 }
         }
         transition={{ duration: 0.48, ease: EASE_OUT }}
-        className="relative z-10 h-[clamp(220px,32svh,300px)] w-full max-w-[360px] shrink-0 lg:pointer-events-none lg:absolute lg:inset-0 lg:z-0 lg:h-full lg:max-w-none"
+        className="absolute inset-x-0 top-0 z-10 mx-auto h-[calc(clamp(280px,35svh,340px)+140px)] w-full max-w-none lg:pointer-events-none lg:inset-0 lg:z-0 lg:h-full lg:max-w-none"
       >
         {introFinished ? (
           <Lanyard
@@ -42,6 +42,7 @@ export default function Hero() {
             strapColor="#17191d"
             strapWidth={0.7}
             strapLength={0.42}
+            compactStrapLength={0.64}
             breeze={0.12}
             metal="silver"
             finish="glossy"
@@ -51,12 +52,12 @@ export default function Hero() {
         ) : null}
       </motion.div>
 
-      <div className="relative mx-auto grid w-full max-w-[1240px] items-center gap-2 px-5 sm:px-8 lg:pointer-events-none lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-10">
+      <div className="relative mx-auto grid w-full max-w-[1240px] items-center gap-2 px-5 pt-[clamp(280px,35svh,340px)] sm:px-8 lg:pointer-events-none lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-10 lg:pt-0">
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: EASE_OUT }}
-          className="relative z-10 flex origin-center flex-col items-center justify-center py-5 text-center sm:py-7 lg:pointer-events-auto lg:-translate-x-8 lg:-translate-y-3 lg:origin-left lg:scale-[0.92] lg:items-start lg:py-0 lg:text-left"
+          className="relative z-10 mt-8 flex origin-center flex-col items-center justify-center py-5 text-center sm:py-7 lg:pointer-events-auto lg:mt-0 lg:-translate-x-8 lg:-translate-y-3 lg:origin-left lg:scale-[0.92] lg:items-start lg:py-0 lg:text-left"
         >
           <h1 className="mx-auto max-w-[680px] text-balance text-[clamp(2rem,8.5vw,3rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground sm:text-[clamp(2.8rem,6.1vw,5.4rem)] lg:mx-0">
             Halo, saya{" "}

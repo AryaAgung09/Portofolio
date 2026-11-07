@@ -59,8 +59,8 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           aria-live="polite"
           aria-label="Memuat portofolio"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ y: "-100%" }}
+          transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
           className="fixed inset-0 z-[100] flex min-h-svh items-center justify-center overflow-hidden bg-[#080d16] px-6 text-white"
         >
           <div
