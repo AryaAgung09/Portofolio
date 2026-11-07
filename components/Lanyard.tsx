@@ -508,6 +508,9 @@ const makeCanvasTexture = (canvas: HTMLCanvasElement, anisotropy: number) => {
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.anisotropy = anisotropy;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.generateMipmaps = true;
   return texture;
 };
 
@@ -976,7 +979,7 @@ const Lanyard = ({
 
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: !isCompact(), alpha: true, powerPreference: 'high-performance' });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     } catch {
       return undefined;
     }
@@ -989,7 +992,7 @@ const Lanyard = ({
     canvas.setAttribute('aria-hidden', 'true');
     container.appendChild(canvas);
 
-    const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    const anisotropy = Math.min(16, renderer.capabilities.getMaxAnisotropy());
     const scene = new THREE.Scene();
     const environment = buildEnvironment(renderer);
     scene.environment = environment.texture;
@@ -1471,7 +1474,7 @@ const Lanyard = ({
     const resize = () => {
       view.width = Math.max(1, container.clientWidth);
       view.height = Math.max(1, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isCompact() ? 1 : 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(view.width, view.height, false);
       apply();
       render();
