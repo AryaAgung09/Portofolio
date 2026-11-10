@@ -1103,7 +1103,6 @@ const Lanyard = ({
     let time = 0;
     let visible = true;
     let alive = true;
-    let rendererReady = false;
     let placed = false;
     let hovering = false;
     let press: Press | null = null;
@@ -1383,7 +1382,7 @@ const Lanyard = ({
     };
 
     const start = () => {
-      if (raf || !visible || !alive || !rendererReady) return;
+      if (raf || !visible || !alive) return;
       sim.calm = 0;
       last = performance.now();
       raf = requestAnimationFrame(tick);
@@ -1484,7 +1483,8 @@ const Lanyard = ({
       view.height = Math.max(1, container.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(view.width, view.height, false);
-      apply()
+      apply();
+      render();
     };
 
     const resizeObserver = new ResizeObserver(resize);
@@ -1501,18 +1501,6 @@ const Lanyard = ({
 
     applyRef.current = apply;
     resize();
-    renderer.compileAsync(scene, camera).then(() => {
-      if (!alive) return;
-      rendererReady = true;
-      render();
-      start();
-    }).catch(error => {
-      if (!alive) return;
-      console.error('Unable to compile lanyard shaders asynchronously; falling back to regular rendering.', error);
-      rendererReady = true;
-      render();
-      start();
-    });
 
     return () => {
       alive = false;
