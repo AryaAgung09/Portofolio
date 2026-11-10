@@ -1113,8 +1113,8 @@ const Lanyard = ({
     const paintFaces = () => {
       const s = settingsRef.current!;
       const color = parseColor(s.cardColor, [1, 1, 1]);
-      const width = FACE_WIDTH;
-      const height = Math.round((FACE_WIDTH * layout.height) / layout.width);
+      const width = Math.max(FACE_WIDTH, images.front?.naturalWidth ?? 0, images.back?.naturalWidth ?? 0);
+      const height = Math.round((width * layout.height) / layout.width);
       if (frontCanvas.width !== width || frontCanvas.height !== height) {
         frontCanvas.width = width;
         frontCanvas.height = height;
