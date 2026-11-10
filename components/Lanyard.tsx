@@ -456,9 +456,19 @@ const buildClampGeometry = (width: number) => {
 const buildBandGeometry = (count: number) => {
   const columns = BAND_COLUMNS.length;
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(count * columns * 3), 3));
-  geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(count * columns * 3), 3));
-  geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(count * columns * 2), 2));
+  const position = new THREE.BufferAttribute(new Float32Array(count * columns * 3), 3);
+  const normal = new THREE.BufferAttribute(new Float32Array(count * columns * 3), 3);
+  const uv = new THREE.BufferAttribute(new Float32Array(count * columns * 2), 2);
+  position.setUsage(THREE.DynamicDrawUsage);
+  normal.setUsage(THREE.DynamicDrawUsage);
+  for (let i = 0; i < count; i++) {
+    for (let c = 0; c < columns; c++) {
+      uv.setXY(i * columns + c, BAND_COLUMNS[c], 1 - i / (count - 1));
+    }
+  }
+  geometry.setAttribute('position', position);
+  geometry.setAttribute('normal', normal);
+  geometry.setAttribute('uv', uv);
   const index: number[] = [];
   for (let i = 0; i < count - 1; i++) {
     for (let c = 0; c < columns - 1; c++) {
@@ -1093,6 +1103,7 @@ const Lanyard = ({
     let time = 0;
     let visible = true;
     let alive = true;
+    let rendererReady = false;
     let placed = false;
     let hovering = false;
     let press: Press | null = null;
@@ -1271,10 +1282,10 @@ const Lanyard = ({
       const held = 1 - mouth.distanceTo(tuck) / Math.max(length, 0.001);
       const position = bandGeometry.getAttribute('position');
       const normal = bandGeometry.getAttribute('normal');
-      const uv = bandGeometry.getAttribute('uv');
       const columns = BAND_COLUMNS.length;
       const restLength = sim.rest * JOINTS;
       const repeats = restLength / (strapScale * tileRatio);
+      strapTexture.repeat.y = repeats;
       const width = strapScale / Math.pow(Math.max(1, length / Math.max(restLength, 0.001)), 0.35);
       const { tangent, toCamera, across, facing } = work;
       for (let i = 0; i < SAMPLES; i++) {
@@ -1291,7 +1302,6 @@ const Lanyard = ({
         across.copy(side).multiplyScalar(Math.cos(angle)).addScaledVector(facing, Math.sin(angle));
         facing.crossVectors(tangent, across);
         const p = points[i];
-        const v = (1 - i / (SAMPLES - 1)) * repeats;
         for (let c = 0; c < columns; c++) {
           const k = i * columns + c;
           const offset = (BAND_COLUMNS[c] - 0.5) * width;
@@ -1303,13 +1313,11 @@ const Lanyard = ({
             facing.y * bendCos + across.y * bendSin,
             facing.z * bendCos + across.z * bendSin
           );
-          uv.setXY(k, BAND_COLUMNS[c], v);
         }
       }
       work.end.copy(across);
       position.needsUpdate = true;
       normal.needsUpdate = true;
-      uv.needsUpdate = true;
 
       across.copy(work.end).addScaledVector(axis, -work.end.dot(axis)).normalize();
       facing.crossVectors(across, axis).normalize();
@@ -1355,7 +1363,7 @@ const Lanyard = ({
     const tick = (now: number) => {
       raf = 0;
       if (!alive) return;
-      if (isCompact() && now - last < 1000 / 30) {
+      if (isCompact() && now - last < 1000 / 60) {
         raf = requestAnimationFrame(tick);
         return;
       }
@@ -1375,7 +1383,7 @@ const Lanyard = ({
     };
 
     const start = () => {
-      if (raf || !visible || !alive) return;
+      if (raf || !visible || !alive || !rendererReady) return;
       sim.calm = 0;
       last = performance.now();
       raf = requestAnimationFrame(tick);
@@ -1476,8 +1484,7 @@ const Lanyard = ({
       view.height = Math.max(1, container.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(view.width, view.height, false);
-      apply();
-      render();
+      apply()
     };
 
     const resizeObserver = new ResizeObserver(resize);
@@ -1494,6 +1501,18 @@ const Lanyard = ({
 
     applyRef.current = apply;
     resize();
+    renderer.compileAsync(scene, camera).then(() => {
+      if (!alive) return;
+      rendererReady = true;
+      render();
+      start();
+    }).catch(error => {
+      if (!alive) return;
+      console.error('Unable to compile lanyard shaders asynchronously; falling back to regular rendering.', error);
+      rendererReady = true;
+      render();
+      start();
+    });
 
     return () => {
       alive = false;
